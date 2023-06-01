@@ -1,0 +1,167 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+#head-container {
+    display: flex;
+}
+
+.building-overview {
+    margin-top: 130px;
+    width: 100px;
+    position: absolute;
+    right: 15%;
+}
+
+
+
+.col {
+  margin-bottom: 50px;
+}
+
+.building-card {
+    width: 300px;
+    height: 370px;
+    
+    color: white;
+    padding: 20px 20px;
+    border: 1px solid var(--bordergry);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.building-img {
+  padding: 0 50px;
+  width: 150;
+  height: 150px;
+  margin-bottom: 10px;
+  
+}
+
+
+
+.image {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+    width: 150px;
+    height: 200px;
+    padding-bottom: 10px;
+  }
+  
+  .image-contain {
+    object-fit: contain;
+    object-position: center;
+  }
+  
+  .image-cover {
+    object-fit: cover;
+    object-position: right top;
+  }
+
+.building-title {
+    background-color: var(--darkgrey);
+    margin-bottom: 50px;
+}
+
+.button {
+  width: 100%;
+  height: 35px;
+  background-color: var(--darkgrey);
+  border: 2px solid var(--bordergry);
+  border-radius: 10px;
+  color: var(--textgreen);
+  padding: 0px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  margin-top: 10px;
+  
+}
+
+
+
+.button:hover {
+  background-color: var(--buttongreen);
+  color: var(--black);
+}
+
+
+  
+  
+  .card {
+    border: 1px solid var(--bordergry);
+    border-radius: 10px;
+    margin: 8px;
+    width: 300px;
+  }
+  
+  .about-section {
+    margin-top: 20px;
+    padding-bottom: 100px;
+    text-align: left;
+   
+    color: white;
+  }
+
+  .keycard {
+    margin: 0 auto;
+    margin-top: 50px;
+    background-color: #006c5361;
+    width: 250px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.keycard-brand {
+    background-color: #006c5302;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: black;
+    display: flex;
+    justify-content: end;
+    padding-top: 2%;
+    padding-right: 3%;
+}
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  .container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .title {
+    color: grey;
+  }
+
+.personText {
+  min-height: 80px;
+}
+  
+  
+  
+  @media screen and (max-width: 650px) {
+    .column {
+      width: 100%;
+      display: block;
+    }
+  }
+
+    /*löscht den Karte ICON bei max-width 828px*/
+    @media screen and (max-width: 828px) {
+      .col-4 {display: none;}
+    }
+  
+    
+
+    

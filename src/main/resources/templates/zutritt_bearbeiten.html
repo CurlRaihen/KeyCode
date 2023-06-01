@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{zutritteBearbeiten}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/antrag_keycard.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-key"></i>
+            <h2 id="page-title" th:text="#{zb_headline}"></h2>
+        </div>
+        <div class="keycard-dropdown">
+            <h6 th:text="#{betroffene_keycard}"></h6>
+            <div class="keycardnr" th:text="${keycard_id}"></div>
+        </div>
+        <form method="post" th:action="@{/rechte_bearbeitet}" enctype="multipart/form-data">
+            <input name="keycardId" th:value="${keycard_id}" hidden>
+            <div class="formular">
+                <div class="date">
+                    <div class="row">
+                        <div class="col">
+                            <h6 th:text="#{startdatum}"></h6>
+                            <input id="startdatum" type="date" class="form-control" name="anfangstag" min="tomorrow"
+                                required>
+                        </div>
+                        <div class="col">
+                            <h6 th:text="#{enddatum}"></h6>
+                            <input type="date" id="enddatum" name="endtag" required><br>
+                        </div>
+                    </div>
+                </div>
+                <div class="facilites">
+                    <div class="row">
+                        <div class="col">
+                            <h6 th:text="#{raum_löschen}"></h6>
+                            <th:block th:if="${anzahlRaumBerechtigungen > 0}">
+                                <div th:each="raum : ${raumBerechtigunen}">
+                                    <th:block th:with="randomId=${#strings.randomAlphanumeric(10)}">
+                                        <div class="raum-item" th:name="${randomId}" th:id="${randomId}">
+                                            <p class="raum-title" th:text="${raum}"></p>
+                                            <button th:name="${randomId}" onclick="deleteMyself(name)"
+                                                class="raum-btn">x</button>
+                                            <input name="raum" th:value="${raum}" hidden><br>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${anzahlRaumBerechtigungen == 0}">
+                                <h3 style="margin: 40px;" class="d-flex justify-content-center fehlermeldung"
+                                    th:text="#{keine_berechtigung}"></h3>
+                            </th:block>
+                        </div>
+                        <div class="col">
+                            <h6 th:text="#{bereich_löschen}"></h6>
+                            <th:block th:if="${anzahlBereichBerechtigungen > 0}">
+                                <div th:each="bereich : ${bereichBerechtigungen}">
+                                    <th:block th:with="randomId=${#strings.randomAlphanumeric(10)}">
+                                        <div class="raum-item" th:name="${randomId}" th:id="${randomId}">
+                                            <p class="raum-title" th:text="${bereich}"></p>
+                                            <button th:name="${randomId}" onclick="deleteMyself(name)"
+                                                class="raum-btn">x</button>
+                                            <input name="bereich" th:value="${bereich}" hidden><br>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${anzahlBereichBerechtigungen == 0}">
+                                <h3 style="margin: 40px;" class="d-flex justify-content-center fehlermeldung"
+                                    th:text="#{keine_berechtigung}"></h3>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="facilites facility-edit">
+                    <div class="row">
+                        <div class="col">
+                            <h6 th:text="#{raum_hinzu}"></h6>
+                            <input type="text" id="raumname" name="raum" placeholder="IM-SR004">
+                            <div class="icon-btn" id="mehrRaeume">
+                                <a onclick="moreRooms()">
+                                    <i id="icon" class="fa fa-plus icon-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h6 th:text="#{bereich_hinzu}"></h6>
+                            <input type="text" id="bereichsname" name="bereich" placeholder="Lehrstuhl Lehner">
+                            <div class="icon-btn" id="mehrBereiche">
+                                <a onclick="moreBereiche()">
+                                    <i id="icon" class="fa fa-plus icon-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a onclick="checkInput()">
+                    <button type="button" data-toggle="" data-target="" class="button" th:text="#{speichern}"></button>
+                </a>
+                <button id="btn-modal-date-fehler" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                    data-target="#myModalDateFehler">OPEN MODAL</button>
+                <div class="modal fade" id="myModalDateFehler" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="modal-title-fehler" class="modal-title" th:text="#{fehler_Date_headline}"></h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="modal-text" th:text="#{fehler_Date_text}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-modal-erfolg" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                    data-target="#myModalErfolg">OPEN MODAL</button>
+                <div class="modal fade" id="myModalErfolg" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="modal-title-erfolg" class="modal-title" th:text="#{antrag_bestätigen_headline}">
+                                </h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <button id="btn-submit" class="button" type="submit" th:text="#{btn_bestaetigen}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-modal-fehler" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                    data-target="#myModalFehler">OPEN MODAL</button>
+                <div class="modal fade" id="myModalFehler" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="modal-title-fehler" class="modal-title"
+                                    th:text="#{fehler_Raumeingabe_headline}"></h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <th:block th:if="${rolle == 'Verwaltungsmitarbeiter'}">
+                                    <p id="modal-text" th:text="#{vm_fehler_Raumeingabe_text}"></p>
+                                </th:block>
+                                <th:block th:if="${rolle == 'Verwaltungsleitung'}">
+                                    <p id="modal-text" th:text="#{fehler_Raumeingabe_text}"></p>
+                                </th:block>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-modal-empty" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                    data-target="#myModalEmpty"></button>
+                <div class="modal fade" id="myModalEmpty" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="modal-title-fehler" class="modal-title" th:text="#{voller_Entzug_headline}">
+                                </h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="modal-text" th:text="#{voller_Entzug_text}"></p>
+                                <button id="btn-submit" class="button" type="submit" th:text="#{btn_bestaetigen}">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<script type="text/javascript" th:inline="javascript">
+
+    //CHECK INPUT FOR ROOMS AND ARES
+    function checkInput() {
+        //CHECK DATE
+        var inputStartDate = document.querySelectorAll('[name="anfangstag"]');
+        var inputEndDate = document.querySelectorAll('[name="endtag"]');
+        if ((inputStartDate[0].value == "" && inputEndDate[0].value == "") ||
+            (inputStartDate[0].value > inputEndDate[0].value)) {
+            document.getElementById("btn-modal-date-fehler").click();
+            return;
+        }
+
+
+        //CHECK ROOM AND AREA
+        var allRooms = /*[[${allRooms}]]*/ "";
+        var allAreas = /*[[${allAreas}]]*/ "";
+        var bereichWasFound = false;
+        var roomWasFound = false;
+        var inputRooms = document.querySelectorAll('[name="raum"]');
+        var inputAreas = document.querySelectorAll('[name="bereich"]');
+        //CHECK IF INPUT ROOM WAS FOUND
+        for (let i = 0; i < inputRooms.length; i++) {
+            for (let y = 0; y < allRooms.length; y++) {
+                console.log(inputRooms[i].value + "?" + allRooms[y]);
+                if (inputRooms[i].value == allRooms[y]) {
+                    roomWasFound = true;
+                    break;
+                } else {
+                    if (inputRooms[i].value == "") {
+                        roomWasFound = true;
+                        break;
+                    } else {
+                        roomWasFound = false;
+                    }
+                }
+            }
+            if (roomWasFound == false) {
+                break;
+            }
+        }
+        //CHECK IF INPUT AREA WAS FOUND
+        for (let i = 0; i < inputAreas.length; i++) {
+            for (let y = 0; y < allAreas.length; y++) {
+
+                if (inputAreas[i].value == allAreas[y]) {
+                    bereichWasFound = true;
+                    break;
+                } else {
+                    if (inputAreas[i].value == "") {
+                        bereichWasFound = true;
+                        break;
+                    } else {
+                        bereichWasFound = false;
+                    }
+                }
+            }
+            if (bereichWasFound == false) {
+                break;
+            }
+        }
+
+        //CHECKS IF INPUT ROOM/AREA WAS FOUND OR IS EMPTY
+        if (inputRooms[0].value == "" && inputAreas[0].value == "") {
+            document.getElementById("btn-modal-empty").click();
+            return;
+        } else if (inputRooms[0].value != "" && inputAreas[0].value == "") {
+            if (roomWasFound == true) {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            }
+        } else if (inputRooms[0].value == "" && inputAreas[0].value != "") {
+            if (bereichWasFound == true) {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            }
+        } else {
+            if (bereichWasFound == false || roomWasFound == false) {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            }
+        }
+
+    }
+</script>
+
+<!-- GENREATE INPUT FIELDS START -->
+<script type="text/javascript" th:inline="javascript">
+    //Set Min and Max Date for Startdatum
+    var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    var tomorrowOneYear = new Date(Date.now() + 24 * 60 * 60 * 365000).toISOString().split('T')[0];
+    document.getElementById("startdatum").setAttribute('min', anfangstag);
+    document.getElementById("startdatum").setAttribute('max', tomorrowOneYear);
+    document.getElementById("enddatum").setAttribute('min', anfangstag + 1);
+    document.getElementById("enddatum").setAttribute('max', tomorrowOneYear);
+
+    //SET DEFAULT VALUES FOR DATE
+    var anfangstag = /*[[${anfangstag}]]*/ "";
+    var endtag = /*[[${endtag}]]*/ "";
+    document.getElementById("startdatum").defaultValue = anfangstag;
+    document.getElementById("enddatum").defaultValue = endtag;
+
+    //Insert form after plus button click
+    function moreRooms() {
+        let myReferenceDiv = document.querySelector('#mehrRaeume');
+        let prev = myReferenceDiv.previousElementSibling.value;
+        console.log(prev);
+        if (prev != "") {
+            let clone = document.querySelector('#raumname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrRaeume').insertAdjacentElement("beforebegin", clone);
+        } else {
+            myReferenceDiv.previousElementSibling.focus();
+        }
+
+    }
+    function moreBereiche() {
+        let myReferenceDiv = document.querySelector('#mehrBereiche');
+        let prev = myReferenceDiv.previousElementSibling.value;
+        console.log(prev);
+        if (prev != "") {
+            let clone = document.querySelector('#bereichsname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrBereiche').insertAdjacentElement("beforebegin", clone);
+        } else {
+            myReferenceDiv.previousElementSibling.focus();
+        }
+    }
+
+    //Delete Rooms/Bereiche
+    function deleteMyself(id) {
+        document.getElementById(id).remove();
+    }
+</script>
+<!-- GENREATE INPUT FIELDS END -->
+
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "zutritt_bearbeiten";
+    var keycard_id = /*[[${keycard_id}]]*/ "";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption + "&keycard_id=" + keycard_id;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption + "&keycard_id=" + keycard_id;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

@@ -1,0 +1,66 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+.cards {
+    display: table;
+    margin: 0 auto;
+}
+
+.menu-card {
+    background-color: var(--darkgrey);
+    width: 300px;
+    height: 370px;
+    border-radius: 8px;
+    box-shadow: 0 0 2px #888;
+    border-color: var(--brightgrey);
+    background-color: var(--darkgrey);
+    text-align: center;
+}
+
+.card-title {
+    height: 80px;
+}
+
+.card-title,
+.card-text,
+.card-btn {
+    padding: 20px 40px 0px 40px;
+    background-color: var(--darkgrey);
+}
+
+.card-text {
+    text-align: center;
+    color: var(--brightgrey);
+    height: 100px;
+}
+
+
+
+.button {
+    width: 220px;
+    height: 35px;
+    background-color: var(--darkgrey);
+    border: 2px solid var(--bordergry);
+    border-radius: 10px;
+    color: var(--textgreen);
+    padding: 0px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-top: 70px;
+}
+
+
+
+.button:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${param.facilityName}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/zutritte.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-eye"></i>
+            <h2 id="page-title" th:text="|#{zutrittsberechtigungen} ${param.facilityType} #${param.facilityName}|">
+            </h2>
+        </div>
+        <div style="margin-bottom: 5px;" class="page-title" th:text="#{personen}"></div>
+        <div class="table-item" th:each="person : ${berechtigtePersonen}">
+            <th:block th:if="${person[1] == 'Nutzer'}">
+                <div class="item-name" th:text="#{nutzer}"></div>
+            </th:block>
+            <th:block th:if="${person[1] == 'Verwaltungsmitarbeiter'}">
+                <div class="item-name" th:text="#{vm}"></div>
+            </th:block>
+            <th:block th:if="${person[1] == 'Verwaltungsleitung'}">
+                <div class="item-name" th:text="#{vl}"></div>
+            </th:block>
+            <div class="item-content" th:text="${person[0]}"></div>
+        </div>
+        <th:block th:if="${anzahlBerechtigungen == 0}">
+
+            <h1 class="d-flex justify-content-center fehlermeldung"
+                th:text="|#{fehler_keine_person} #${param.facilityName}|"></h1>
+        </th:block>
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "zutrittsrechte_inhaber";
+    var chosenFacility = /*[[${param.facilityName}]]*/ "";
+    var chosenFacilityType = /*[[${param.facilityType}]]*/ "";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption + "&facilityName=" + chosenFacility + "&facilityType=" + chosenFacilityType;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption + "&facilityName=" + chosenFacility + "&facilityType=" + chosenFacilityType;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

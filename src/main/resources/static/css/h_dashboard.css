@@ -1,0 +1,69 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: var(--black);
+    color: white;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+#container-content {
+    padding: 0px 10% 0px 10%;
+    background-color: var(--black);
+}
+
+#page-overview {
+    padding: 0px 0px 50px 0px;
+}
+
+#page-title {
+    padding: 10px 0px 0px 0px;
+}
+
+#icon {
+    font-size: 40px;
+    display: inline-block;
+    border-radius: 150px;
+    box-shadow: 0 0 2px #888;
+    padding: 0.5em 0.6em;
+    background-color: var(--brightgrey);
+    color: black;
+}
+
+.col-user {
+    width: 300px;
+    padding: 0;
+    margin: 0;
+}
+
+
+.menu-card {
+    background-color: var(--darkgrey);
+    width: 270px;
+    height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 0 2px #888;
+    border-color: var(--brightgrey);
+    background-color: var(--darkgrey);
+    text-align: center;
+}
+
+.card-icon {
+    padding: 30px 0px 0px 0px;
+    background-color: var(--darkgrey);
+}
+
+.card-title h3 {
+    padding: 60px 0px 0px 0px;
+    background-color: var(--darkgrey);
+}

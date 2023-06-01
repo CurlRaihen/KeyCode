@@ -1,0 +1,149 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: var(--black);
+    color: white;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
+        Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+
+
+.keycard {
+    margin: 0 auto;
+    background-color: white;
+    width: 350px;
+    height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.keycard-brand {
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    display: flex;
+    justify-content: end;
+    padding-top: 2%;
+    padding-right: 3%;
+}
+
+.keycard-owner {
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    position: relative;
+    top: 60%;
+    padding-left: 3%;
+}
+
+#ownerName {
+    float: left;
+
+}
+
+#ownerDate {
+    float: right;
+    margin-right: 7px;
+}
+
+
+.cardText {
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+}
+
+.smallCardText {
+    font-size: 10px;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: black;
+}
+
+.keycard-info {
+    text-align: center;
+    display: block;
+    padding-top: 20px;
+    padding: 0;
+
+}
+
+
+.icon-btns {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.icon-btns a {
+    padding: 0 20px 0 20px;
+}
+
+.icon-btn {
+    border: none;
+}
+
+
+
+.btn-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#status {
+    color: var(--brightgrey);
+}
+
+.keycard-info #icon {
+    font-size: 25px;
+    padding: 20px;
+    background-color: var(--black);
+    color: white;
+    margin-bottom: 15px;
+
+}
+
+.modal-body a button {
+    border: 1px solid var(--bordergry);
+    border-radius: 6px;
+    color: var(--textgreen);
+    width: 100px;
+    height: 40px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.modal-body a button:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}
+
+/*löscht den Karte ICON bei max-width 828px*/
+@media screen and (max-width: 601px) {
+    .keycard {
+        width: 280px;
+        height: 170px;
+    }
+
+    .cardText {
+        font-size: small;
+    }
+
+    #ownerDate {
+        margin-bottom: 10px;
+    }
+}

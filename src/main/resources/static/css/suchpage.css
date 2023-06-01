@@ -1,0 +1,165 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+
+.filterSelect {
+    width: 100px;
+    height: 50px;
+    margin-left: 5%;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    border: 1px solid var(--bordergry);
+    border-radius: 6px;
+}
+
+
+
+/* START RADIO DIV*/
+
+.radio {
+    display: flex;
+    
+}
+
+.form-check {
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.form-check label {
+    padding-left: 20px;
+    margin-left: 10px;
+}
+
+/* END RADIO DIV*/
+
+/* START FORM DIV*/
+
+form {
+    display: flex;
+}
+
+.form-control {
+    width: 74%;
+    height: 50px;
+    background-color: var(--bordergry);
+    border: 1px solid var(--brightgrey);
+    margin-bottom: 90px;
+}
+
+
+.form-button {
+    width: 15%;
+    height: 50px;
+    margin-left: 1%;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    border: 1px solid var(--bordergry);
+    border-radius: 6px;
+}
+
+/* END FORM DIV*/
+
+/* START Ergebnis DIV*/
+
+.ergebnis-title {
+    margin-bottom: 10px;
+}
+
+.overview-title {
+    margin-bottom: 10px;
+}
+
+.akteur_search {
+    width: 84%;
+}
+
+.antrag-overview {
+    width: 100%;
+    height: 110px;
+    background-color: var(--darkgrey);
+    border: 1px solid var(--bordergry);
+    border-radius: 7px;
+    display: inline-block; 
+    margin-bottom: 10px;
+}
+
+.overview-left #icon {
+    font-size: 20px;
+    margin: 20px;
+    padding: 20px 23px;
+}
+
+
+
+.overview-left {
+    float: left;
+    display: flex;
+    background-color: var(--darkgrey);
+}
+
+.overview-text {
+    margin-left: 20px;
+    background-color: var(--darkgrey);
+    margin-top: 25px;
+
+}
+
+.hashtags {
+    display: flex;
+    background-color: var(--darkgrey);
+}
+
+.overview-text p {
+    background-color: var(--darkgrey);
+    margin: 0;
+}
+
+.hashtags p {
+    color: var(--brightgrey);
+    margin-right: 10px;
+}
+
+.button {
+    float: right;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    text-decoration: none;
+    margin-right: 40px;
+    margin-top: 40px;
+    border: none;
+}
+
+.button:hover {
+    text-decoration: none;
+    color: var(--textgreen);
+    cursor: pointer;
+}
+
+/* END Ergebnis DIV*/
+
+#searchBtn2 {
+    display: none;
+    width: 50px;
+    color: var(--textgreen);
+}
+
+#searchBtn2 i {
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+}
+
+@media screen and (max-width: 601px) {
+    #searchBtn1 {display: none;}
+    #searchBtn2 {display: inline-block;}
+    .filterSelect {width: 60px;}
+  }
+
+
+

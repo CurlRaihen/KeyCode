@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/building.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-home"></i>
+            <h2 id="page-title">Home</h2>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="table-title" th:text="#{zutrittsprotokolle}">Zutrittsprokolle</div>
+                <form action="/doorlogSuche">
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{startdatum}"></div>
+                        <input name="startdatum" id="zutritt_starttag" class="player-two" type="date" min="tomorrow" required>
+                    </div>
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{enddatum}"></div>
+                        <input name="enddatum" id="zutritt_endtag" class="player-two" type="date" min="tomorrow" required>
+                    </div>
+                    
+                    <button hidden type="submit" id="zutritt_submit"></button>
+                    <button onclick="checkDateInput('zutritt')" type="button" class="button">Download</button>
+                </form>
+            </div>
+            <div class="col">
+                <div class="table-title" th:text="#{keycardprotokolle}">Keycardprotokolle</div>
+                <form action="/keycardlogSuche">
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{startdatum}">Startdatum</div>
+                        <input name="startdatum" id="keycard_starttag" class="player-two" type="date" min="tomorrow" required>
+                    </div>
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{enddatum}">Enddatum</div>
+                        <input name="enddatum" id="keycard_endtag" class="player-two" type="date" min="tomorrow" required>
+                    </div>
+                    <button hidden type="submit" id="keycard_submit"></button>
+                    <button onclick="checkDateInput('keycard')" type="button" class="button">Download</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- OPEN MODAL -->
+        <button id="btn-modal-date-fehler" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+            data-target="#myModalDateFehler">OPEN MODAL</button>
+        <div class="modal fade" id="myModalDateFehler" role="dialog">
+            <div class="modal-dialog modal-md">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 id="modal-title-fehler" class="modal-title" th:text="#{fehler_Date_headline}"></h4>
+                        <button style="color: white;" type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-text" th:text="#{fehler_Date_text}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="diagramme">
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{türzugänge}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div class="chart chart-sm">
+                    <canvas id="chartjs-dashboard-line1"></canvas>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{versuchtezugänge}"></h5>
+            </div>
+            <div class="card-body py-3">
+                <div class="chart chart-sm">
+                    <canvas id="chartjs-dashboard-line2"></canvas>
+                </div>
+            </div>
+
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{akteuranteil}"></h5>
+            </div>
+            <div class="card-body d-flex">
+                <div class="align-self-center w-100">
+                    <div class="py-3">
+                        <div class="chart chart-xs">
+                            <canvas id="chartjs-dashboard-pie"></canvas>
+                        </div>
+                    </div>
+
+                    <table class="table mb-0">
+                        <tbody>
+                            <tr>
+                                <td th:text="#{admins}"></td>
+                                <td class="text-end" id="adminnumber" th:text="${adminAnzahl}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{vl}"></td>
+                                <td class="text-end" id="leiternumber" th:text="${leiterAnzahl}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{vm}"></td>
+                                <td class="text-end" id="mitarbeiternumber" th:text="${mitarbeiterAnzahl}"></td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{nutzer}"></td>
+                                <td class="text-end" id="nutzernumber" th:text="${nutzerAnzahl}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td th:text="#{gesamt}"></td>
+                                <td class="text-end" id="gesamtnumber" th:text="${gesamtAnzahl}">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="chart chart-xs">
+                <canvas id="chartjs-dashboard-pie"></canvas>
+            </div>
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{akteurzugänge}"></h5>
+            </div>
+            <div class="card-body d-flex">
+                <div class="align-self-center w-100">
+                    <canvas id="chartjs-dashboard-bar"></canvas>
+                </div>
+            </div>
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{akteurkarte}"></h5>
+            </div>
+            <div class="card-body px-4">
+                <div id="world_map" style="height:350px;"></div>
+            </div>
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{datenbank}"></h5>
+            </div>
+            <div class="card-body px-4">
+                <a href="http://132.231.36.107/phpmyadmin" target="_blank">Link</a>
+            </div>
+            <div class="card-header">
+                <h5 class="card-title mb-0" th:text="#{serverstats}"></h5>
+            </div>
+            <div class="card-body px-4">
+                <a href="http://132.231.36.107:19999" target="_blank">Link</a>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <script src="/dashboard/static/js/app.js"></script>
+
+    <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script type="text/javascript" th:inline="javascript">
+        //CHECK DATE
+        function checkDateInput(x) {
+            if(x == "zutritt") {
+                var inputStartDate = document.getElementById("zutritt_starttag");
+                var inputEndDate = document.getElementById('zutritt_endtag')
+                if ((inputStartDate.value > inputEndDate.value)) {
+                    document.getElementById("btn-modal-date-fehler").click();
+                    return;
+                } else {
+                    document.getElementById("zutritt_submit").click();
+                }
+            } else {
+                var inputStartDate = document.getElementById("keycard_starttag");
+                var inputEndDate = document.getElementById('keycard_endtag')
+                if ((inputStartDate.value > inputEndDate.value)) {
+                    document.getElementById("btn-modal-date-fehler").click();
+                    return;
+                } else {
+                    document.getElementById("keycard_submit").click();
+                }
+            }
+                
+        }
+
+        var zutrittsprotokoll = /*[[${zutrittsprotokoll}]]*/ "";
+        var keycardprotokoll = /*[[${keycardprotokoll}]]*/ "";
+
+        const hinweis = /*[[#{hinweis}]]*/ "";
+        const zp = /*[[#{zp}]]*/ "";
+        const uni = /*[[#{universitaet}]]*/ "";
+        const tuerid = /*[[#{tuerid}]]*/ "";
+        const ergebnis = /*[[#{ergebnis}]]*/ "";
+        const erstellungszeitpunkt = /*[[#{erstellungszeitpunkt}]]*/ "";
+        const kp = /*[[#{kp}]]*/ "";
+        const bearbeitername = /*[[#{bearbeitername}]]*/ "";
+        const typ = /*[[#{typ}]]*/ "";
+
+        const time = new Date().toLocaleTimeString('de-DE', {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+        }).replace(',', '');
+
+        window.addEventListener("load", (event) => {
+            if (zutrittsprotokoll != null) {
+                generatePDFzutritt();
+            }
+            if (keycardprotokoll != null) {
+                generatePDFkeycard();
+            }
+        });
+
+        function generatePDFzutritt() {
+            if (zutrittsprotokoll != null) {
+                var pdfObject = jsPDFInvoiceTemplate.default(content1);
+            }
+        }
+
+        if (zutrittsprotokoll != null) {
+            var content1 = {
+                outputType: jsPDFInvoiceTemplate.OutputType.Save,
+                returnJsPDFDocObject: true,
+                fileName: zp + uni + time + " .pdf",
+                orientationLandscape: false,
+                compress: true,
+                logo: {
+                    src: "images/UniversityLogo.png",
+                    type: 'PNG', //optional, when src= data:uri (nodejs case)
+                    width: 60, //aspect ratio = width/height
+                    height: 20,
+                    margin: {
+                        top: 0, //negative or positive num, from the current position
+                        left: 0 //negative or positive num, from the current position
+                    }
+                },
+                business: {
+                    name: zp
+                },
+                invoice: {
+                    label: "Invoice #: ",
+                    headerBorder: false,
+                    tableBodyBorder: false,
+                    header: [
+                        {
+                            title: "#",
+                            style: {
+                                width: 6
+                            }
+                        },
+                        {
+                            title: "LogID",
+                            style: {
+                                width: 10
+                            }
+                        },
+                        {
+                            title: "KeycardID",
+                            style: {
+                                width: 20
+                            }
+                        },
+                        {
+                            title: tuerid,
+                            style: {
+                                width: 20
+                            }
+                        },
+                        {
+                            title: ergebnis,
+                            style: {
+                                width: 29
+                            }
+                        },
+                        {
+                            title: erstellungszeitpunkt,
+                            style: {
+                                width: 55
+                            }
+                        }
+                    ],
+                    table: Array.from(zutrittsprotokoll, (eintrag, index) => ([
+                        index + 1,
+                        eintrag[0],
+                        eintrag[1],
+                        eintrag[2],
+                        eintrag[3],
+                        eintrag[4]
+                    ])),
+                },
+                footer: {
+                    text: hinweis,
+                },
+                pageEnable: true,
+                pageLabel: "Page ",
+            };
+        }
+
+        function generatePDFkeycard() {
+            if (keycardprotokoll != null) {
+                var pdfObject = jsPDFInvoiceTemplate.default(content2);
+            }
+        }
+
+        if (keycardprotokoll != null) {
+            var content2 = {
+                outputType: jsPDFInvoiceTemplate.OutputType.Save,
+                returnJsPDFDocObject: true,
+                fileName: kp + uni + time + ".pdf",
+                orientationLandscape: false,
+                compress: true,
+                logo: {
+                    src: "images/UniversityLogo.png",
+                    type: 'PNG', //optional, when src= data:uri (nodejs case)
+                    width: 60, //aspect ratio = width/height
+                    height: 20,
+                    margin: {
+                        top: 0, //negative or positive num, from the current position
+                        left: 0 //negative or positive num, from the current position
+                    }
+                },
+                business: {
+                    name: "Keycardprotokoll"
+                },
+                invoice: {
+                    label: "Invoice #: ",
+                    headerBorder: false,
+                    tableBodyBorder: false,
+                    header: [
+                        {
+                            title: "#",
+                            style: {
+                                width: 6
+                            }
+                        },
+                        {
+                            title: "LogID",
+                            style: {
+                                width: 10
+                            }
+                        },
+                        {
+                            title: "KeycardID",
+                            style: {
+                                width: 20
+                            }
+                        },
+                        {
+                            title: bearbeitername,
+                            style: {
+                                width: 30
+                            }
+                        },
+                        {
+                            title: typ,
+                            style: {
+                                width: 35
+                            }
+                        },
+                        {
+                            title: erstellungszeitpunkt,
+                            style: {
+                                width: 55
+                            }
+                        }
+                    ],
+                    table: Array.from(keycardprotokoll, (eintrag, index) => ([
+                        index + 1,
+                        eintrag[0],
+                        eintrag[1],
+                        eintrag[2],
+                        eintrag[3],
+                        eintrag[4]
+                    ])),
+                },
+                footer: {
+                    text: hinweis,
+                },
+                pageEnable: true,
+                pageLabel: "Page ",
+            };
+        }
+
+        //CHECK INPUT FOR ROOMS AND ARES
+        function checkInput(x) {
+            //CHECK DATE
+            if (x == "zutritt") {
+                var inputStartDate = document.querySelectorAll('[name="zutrittStart"]');
+                var inputEndDate = document.querySelectorAll('[name="zutrittEnd"]');
+            } else {
+                var inputStartDate = document.querySelectorAll('[name="keycardStart"]');
+                var inputEndDate = document.querySelectorAll('[name="keycardEnd"]');
+            }
+            console.log(inputStartDate[0].value);
+            if ((inputStartDate[0].value == "" && inputEndDate[0].value == "") ||
+                (inputStartDate[0].value >= inputEndDate[0].value)) {
+                document.getElementById("btn-modal-date-fehler").click();
+                return;
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var gesamtNumber = Number(document.getElementById("adminnumber").innerHTML) +
+                Number(document.getElementById("leiternumber").innerHTML) +
+                Number(document.getElementById("mitarbeiternumber").innerHTML) +
+                Number(document.getElementById("nutzernumber").innerHTML);
+
+            var s = document.getElementById("gesamtnumber");
+            s.innerHTML = gesamtNumber;
+        });
+    </script>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const maerz = /*[[#{maerz}]]*/ "";
+            const monatMai = /*[[#{monatMai}]]*/ "";
+            const okt = /*[[#{okt}]]*/ "";
+            const dez = /*[[#{dez}]]*/ "";
+            var eintritte = /*[[#{eintritte}]]*/ "";
+
+            var tuerzugaenge = /*[[${tuerzugaenge}]]*/ "";
+            var januar = 0, februar = 0, märz = 0, april = 0, mai = 0, juni = 0, juli = 0, august = 0, september = 0, oktober = 0, november = 0, dezember = 0;
+
+            tuerzugaenge.forEach(function (tuerzugang) {
+                switch (tuerzugang) {
+                    case 1:
+                        januar++;
+                        break;
+                    case 2:
+                        februar++;
+                        break;
+                    case 3:
+                        märz++;
+                        break;
+                    case 4:
+                        april++;
+                        break;
+                    case 5:
+                        mai++;
+                        break;
+                    case 6:
+                        juni++;
+                        break;
+                    case 7:
+                        juli++;
+                        break;
+                    case 8:
+                        august++;
+                        break;
+                    case 9:
+                        september++;
+                        break;
+                    case 10:
+                        oktober++;
+                        break;
+                    case 11:
+                        november++;
+                        break;
+                    case 12:
+                        dezember++;
+                        break;
+                }
+            });
+
+            var ctx = document.getElementById("chartjs-dashboard-line1").getContext("2d");
+            var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+
+            // Line chart
+            new Chart(document.getElementById("chartjs-dashboard-line1"), {
+                type: "line",
+                data: {
+                    labels: ["Jan", "Feb", maerz, "Apr", monatMai, "Jun", "Jul", "Aug", "Sep", okt, "Nov", dez],
+                    datasets: [{
+                        label: eintritte,
+                        fill: true,
+                        backgroundColor: gradient,
+                        borderColor: "#006C53",
+                        data: [
+                            januar,
+                            februar,
+                            märz,
+                            april,
+                            mai,
+                            juni,
+                            juli,
+                            august,
+                            september,
+                            oktober,
+                            november,
+                            dezember
+                        ]
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        intersect: false
+                    },
+                    hover: {
+                        intersect: true
+                    },
+                    plugins: {
+                        filler: {
+                            propagate: false
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            reverse: true,
+                            gridLines: {
+                                color: "rgba(0,0,0,0.0)"
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 1000
+                            },
+                            display: true,
+                            borderDash: [3, 3],
+                            gridLines: {
+                                color: "rgba(0,0,0,0.0)"
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const okt = /*[[#{okt}]]*/ "";
+            const dez = /*[[#{dez}]]*/ "";
+            var versuche = /*[[#{versuche}]]*/ "";
+
+            var versuchtezugaenge = /*[[${versuchtezugaenge}]]*/ "";
+            var januar = 0, februar = 0, märz = 0, april = 0, mai = 0, juni = 0, juli = 0, august = 0, september = 0, oktober = 0, november = 0, dezember = 0;
+
+            versuchtezugaenge.forEach(function (versuchterzugang) {
+                switch (versuchterzugang) {
+                    case 1:
+                        januar++;
+                        break;
+                    case 2:
+                        februar++;
+                        break;
+                    case 3:
+                        märz++;
+                        break;
+                    case 4:
+                        april++;
+                        break;
+                    case 5:
+                        mai++;
+                        break;
+                    case 6:
+                        juni++;
+                        break;
+                    case 7:
+                        juli++;
+                        break;
+                    case 8:
+                        august++;
+                        break;
+                    case 9:
+                        september++;
+                        break;
+                    case 10:
+                        oktober++;
+                        break;
+                    case 11:
+                        november++;
+                        break;
+                    case 12:
+                        dezember++;
+                        break;
+                }
+            });
+
+            var ctx = document.getElementById("chartjs-dashboard-line2").getContext("2d");
+            var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+            gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+            gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+
+            // Line chart
+            new Chart(document.getElementById("chartjs-dashboard-line2"), {
+                type: "line",
+                data: {
+                    labels: ["Jan", "Feb", maerz, "Apr", monatMai, "Jun", "Jul", "Aug", "Sep", okt, "Nov", dez],
+                    datasets: [{
+                        label: versuche,
+                        fill: true,
+                        backgroundColor: gradient,
+                        borderColor: "#006C53",
+                        data: [
+                            januar,
+                            februar,
+                            märz,
+                            april,
+                            mai,
+                            juni,
+                            juli,
+                            august,
+                            september,
+                            oktober,
+                            november,
+                            dezember
+                        ]
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        intersect: false
+                    },
+                    hover: {
+                        intersect: true
+                    },
+                    plugins: {
+                        filler: {
+                            propagate: false
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            reverse: true,
+                            gridLines: {
+                                color: "rgba(0,0,0,0.0)"
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 1000
+                            },
+                            display: true,
+                            borderDash: [3, 3],
+                            gridLines: {
+                                color: "rgba(0,0,0,0.0)"
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script th:inline="javascript">
+        var nutzerAnzahl = /*[[${nutzerAnzahl}]]*/ "";
+        var mitarbeiterAnzahl = /*[[${mitarbeiterAnzahl}]]*/ "";
+        var leiterAnzahl = /*[[${leiterAnzahl}]]*/ "";
+        var adminAnzahl = /*[[${adminAnzahl}]]*/ "";
+
+        var admins = /*[[#{admins}]]*/ "";
+        var verwaltungsleiter = /*[[#{vl}]]*/ "";
+        var verwaltungsmitarbeiter = /*[[#{vm}]]*/ "";
+        var nutzer = /*[[#{nutzer}]]*/ "";
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Pie chart
+            new Chart(document.getElementById("chartjs-dashboard-pie"), {
+                type: "pie",
+                data: {
+                    labels: [admins, verwaltungsleiter, verwaltungsmitarbeiter, nutzer],
+                    datasets: [{
+                        data: [adminAnzahl, leiterAnzahl, mitarbeiterAnzahl, nutzerAnzahl],
+                        backgroundColor: [
+                            "black",
+                            "red",
+                            "#006C53",
+                            "grey",
+                        ],
+                        borderWidth: 5
+                    }]
+                },
+                options: {
+                    responsive: !window.MSInputMethodContext,
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    },
+                    cutoutPercentage: 75
+                }
+            });
+        });
+    </script>
+
+    <script th:inline="javascript">
+
+        const maerz = /*[[#{maerz}]]*/ "";
+        const monatMai = /*[[#{monatMai}]]*/ "";
+        var oktober = /*[[#{oktober}]]*/ "";
+        var dezember = /*[[#{dezember}]]*/ "";
+        var akteure = /*[[#{akteure}]]*/ "";
+
+        var januar = 0, februar = 0, märz = 0, april = 0, mai = 0, juni = 0, juli = 0, august = 0, september = 0, oktober = 0, november = 0, dezember = 0;
+
+        var daten = /*[[${daten}]]*/ "";
+        daten.forEach(function (data) {
+            switch (data[1]) {
+                case 1:
+                    januar++;
+                    break;
+                case 2:
+                    februar++;
+                    break;
+                case 3:
+                    märz++;
+                    break;
+                case 4:
+                    april++;
+                    break;
+                case 5:
+                    mai++;
+                    break;
+                case 6:
+                    juni++;
+                    break;
+                case 7:
+                    juli++;
+                    break;
+                case 8:
+                    august++;
+                    break;
+                case 9:
+                    september++;
+                    break;
+                case 10:
+                    oktober++;
+                    break;
+                case 11:
+                    november++;
+                    break;
+                case 12:
+                    dezember++;
+                    break;
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Bar chart
+            new Chart(document.getElementById("chartjs-dashboard-bar"), {
+                type: "bar",
+                data: {
+                    labels: ["Jan", "Feb", maerz, "Apr", monatMai, "Jun", "Jul", "Aug", "Sep", oktober, "Nov", dezember],
+                    datasets: [{
+                        label: akteure,
+                        backgroundColor: "#006C53",
+                        borderColor: window.theme.primary,
+                        hoverBackgroundColor: "black",
+                        hoverBorderColor: window.theme.primary,
+                        data: [januar, februar, märz, april, mai, juni, juli, august, september, oktober, november, dezember],
+                        barPercentage: .75,
+                        categoryPercentage: .5
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        yAxes: [{
+                            gridLines: {
+                                display: false
+                            },
+                            stacked: false,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }],
+                        xAxes: [{
+                            stacked: false,
+                            gridLines: {
+                                color: "transparent"
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script>
+        var gesamtNumber = document.getElementById("gesamtnumber");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var markers = [{
+                coords: [48.566662, 13.449563],
+                name: "Universität Passau: " + gesamtNumber.innerHTML
+            },
+            ];
+
+            var map = new jsVectorMap({
+                map: "world",
+                selector: "#world_map",
+                zoomButtons: false,
+                markers: markers,
+                markerStyle: {
+                    initial: {
+                        r: 9,
+                        strokeWidth: 7,
+                        stokeOpacity: .4,
+                        fill: "#006C53"
+                    },
+                    hover: {
+                        fill: "black",
+                        stroke: window.theme.primary
+                    }
+                },
+                zoomOnScroll: false
+            });
+            window.addEventListener("resize", () => {
+                map.updateSize();
+            });
+        });
+    </script>
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<!-- SWITCH LANGUAGE START -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "home";
+
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

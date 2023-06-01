@@ -1,0 +1,194 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+body {
+    background-color: var(--black);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: var(--black);
+}
+
+.logo {
+    font-size: 20px;
+    
+}
+
+.nav-top {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+}
+
+.nav-links li {
+    display: inline-block;
+    color: #006C53;
+    
+    padding: 0px 20px;
+    padding-top: 5px;
+}
+
+.nav-top a {
+    color: white;
+}
+
+.nav-top a:hover {
+    color: var(--textgreen);
+    text-decoration: none;
+}
+
+.nav-top .icon {
+    display: none;
+}
+
+#logout {
+    color: var(--textgreen);
+}
+
+/* if Screen < 600px, hide nav-items & show burger icon */ 
+@media screen and (max-width: 600px) {
+    .nav-links li .icon { display: block;}
+    .nav-top .nav-item {display: none;}
+}
+
+/* The sidebar menu */
+.sidebar {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+  }
+  
+  /* The sidebar links */
+  .sidebar a, .sidebar select {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    background-color: #111;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+
+  /* Position and style the close button (top right corner) */
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+  }
+
+
+#myFooter {
+    margin-top: 60px;
+    padding-top: 20px;
+    width: 100%;
+    height: 200px;
+    border-top: 1px solid var(--bordergry);
+}
+
+
+/*FOOTER START*/
+.footer-basic {
+    margin-top: 120px;
+    padding-top: 30px;
+    width: 100%;
+    height: 200px;
+    border-top: 1px solid var(--bordergry);
+  }
+  
+  .footer-basic ul {
+    padding:0;
+    list-style:none;
+    text-align:center;
+    font-size:18px;
+    line-height:1.6;
+    margin-bottom:0;
+  }
+  
+  .footer-basic li {
+    padding:0 10px;
+  }
+  
+  .footer-basic ul a {
+    color:inherit;
+    text-decoration:none;
+    opacity:0.8;
+  }
+  
+  .footer-basic ul a:hover {
+    opacity:1;
+    color: var(--textgreen);
+  }
+  
+  .footer-basic .social {
+    text-align:center;
+    padding-bottom:25px;
+  }
+  
+  .footer-basic .social > a {
+    font-size:24px;
+    width:40px;
+    height:40px;
+    line-height:40px;
+    display:inline-block;
+    text-align:center;
+    border-radius:50%;
+    border:1px solid #ccc;
+    margin:0 8px;
+    opacity:0.75;
+  }
+  
+  .footer-basic .social > a:hover {
+    opacity:0.9;
+    border-color: var(--textgreen);
+  }
+
+  .social a:hover i {
+    
+    color: var(--textgreen);
+  }
+
+  
+  .footer-basic .copyright {
+    margin-top:15px;
+    text-align:center;
+    font-size:13px;
+    color:#aaa;
+    margin-bottom:0;
+  }
+/*FOOTER END*/  
+  
+
+
+
+
+
+
+

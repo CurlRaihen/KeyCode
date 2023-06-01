@@ -1,0 +1,96 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+#head-container {
+    display: flex;
+}
+
+.building-overview {
+    margin-top: 130px;
+    width: 100px;
+    position: absolute;
+    right: 15%;
+}
+
+.row {
+    margin: 20px auto;
+}
+
+.col {
+    margin: 15px auto;
+}
+
+.building-card {
+    width: 300px;
+    height: 300px;
+    background-color: var(--darkgrey);
+    color: white;
+    padding: 20px 40px;
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    display: inline-block;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.building-img {
+    width: 200px;
+    height: 110px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.image {
+    width: 220px;
+    height: 120px;
+}
+
+.image-contain {
+    object-fit: contain;
+    object-position: center;
+}
+
+.image-cover {
+    object-fit: cover;
+    object-position: right top;
+}
+
+.building-title {
+    background-color: var(--darkgrey);
+    margin-bottom: 50px;
+}
+
+.button {
+    width: 100%;
+    height: 35px;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}
+
+.building-overview .button {
+    height: 40px;
+    width: 130px;
+}
+
+.building-overview .button a {
+    text-decoration: none;
+    color: var(--textgreen);
+}
+
+.building-overview .button a:hover {
+    color: var(--black);
+}

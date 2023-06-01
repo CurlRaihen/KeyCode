@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${facility}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/building.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-building"></i>
+            <h2 id="page-title" th:text="${facility}"></h2>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="table-title">Details</div>
+                <div class="table-item">
+                    <div class="item-name">Name</div>
+                    <div class="item-content" th:text="${facility}"></div>
+                </div>
+                <div class="table-item">
+                    <div class="item-name" th:text="#{raeume}"></div>
+                    <div class="item-content" th:text="${anzahlRaeume}"></div>
+                </div>
+                <div class="table-item">
+                    <div class="item-name" th:text="#{sensitive_räume}"></div>
+                    <div class="item-content" th:text="${anzahlSense}"></div>
+                </div>
+                <div class="table-item">
+                    <div class="player-one" th:text="#{raumplan}"></div>
+                    <button class="raumplan-button" onclick="generatePDFraum()">Download</button>
+                </div>
+            </div>
+            <div class="col">
+                <div class="table-title" th:text="#{zutrittsprotokolle}">Zutrittsprokolle</div>
+                <form action="/tuerlogSuche">
+                    <input name="facility" id="facility" type="hidden" th:value="${facility}">
+                    <div class="table-item">
+                        <div id="dropdown-raum">
+                            <div class="player-one" th:text="#{raum_auswählen}">Raum auswählen</div>
+                            <select class="player-two" th:name="raum" id="select_keycard">
+                                <option th:value="gesamt" th:text="#{alle}">
+                                <option th:each="raum : ${raeume}" th:value="${raum}" th:text="${raum}">
+                                </option>
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{startdatum}"></div>
+                        <input required name="startdatum" id="startdatum" class="player-two" type="date" min="tomorrow">
+                    </div>
+                    <div class="table-item">
+                        <div class="player-one" th:text="#{enddatum}"></div>
+                        <input required name="enddatum" id="enddatum" class="player-two" type="date" min="tomorrow">
+                    </div>
+                    <button id="zutritt_download_btn" hidden type="submit" class="button">Download</button>
+                    <button onclick="checkDate()" type="button" class="button">Download</button>
+                </form>
+            </div>
+            <!-- OPEN MODAL -->
+        <button id="btn-modal-date-fehler" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+        data-target="#myModalDateFehler">OPEN MODAL</button>
+    <div class="modal fade" id="myModalDateFehler" role="dialog">
+        <div class="modal-dialog modal-md">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modal-title-fehler" class="modal-title" th:text="#{fehler_Date_headline}"></h4>
+                    <button style="color: white;" type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text" th:text="#{fehler_Date_text}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+    <script>
+        function checkDate() {
+            var inputStartDate = document.getElementById("startdatum");
+            var inputEndDate = document.getElementById('enddatum')
+            if ((inputStartDate.value > inputEndDate.value)) {
+                document.getElementById("btn-modal-date-fehler").click();
+                return;
+            } else {
+                document.getElementById("zutritt_download_btn").click();
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script th:inline="javascript">
+        var raeume = /*[[${raeume}]]*/ "";
+        var facility = /*[[${facility}]]*/ "";
+
+        const universitaet = /*[[#{universitaet}]]*/ "";
+        const raumplan = /*[[#{raumplan}]]*/ "";
+        const raumname = /*[[#{raumname}]]*/ "";
+        const hinweis = /*[[#{hinweis}]]*/ "";
+        const zp = /*[[#{zp}]]*/ "";
+        const tuerid = /*[[#{tuerid}]]*/ "";
+        const ergebnis = /*[[#{ergebnis}]]*/ "";
+        const erstellungszeitpunkt = /*[[#{erstellungszeitpunkt}]]*/ "";
+        const raumid = /*[[#{raumid}]]*/ "";
+        const gebaeudename = /*[[#{gebaeudename}]]*/ "";
+        const istsen = /*[[#{istsen}]]*/ "";
+
+        function generatePDFraum() {
+            var pdfObject = jsPDFInvoiceTemplate.default(content1);
+        }
+
+        const time = new Date().toLocaleTimeString('de-DE', {
+            month: "numeric",
+            day: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+        }).replace(',', '');
+
+        var content1 = {
+            outputType: jsPDFInvoiceTemplate.OutputType.Save,
+            returnJsPDFDocObject: true,
+            fileName: raumplan + facility + " " + universitaet + time + " .pdf",
+            orientationLandscape: false,
+            compress: true,
+            logo: {
+                src: "images/UniversityLogo.png",
+                type: 'PNG', //optional, when src= data:uri (nodejs case)
+                width: 60, //aspect ratio = width/height
+                height: 20,
+                margin: {
+                    top: 0, //negative or positive num, from the current position
+                    left: 0 //negative or positive num, from the current position
+                }
+            },
+            business: {
+                name: raumplan + facility
+            },
+            invoice: {
+                label: "Invoice #: ",
+                headerBorder: false,
+                tableBodyBorder: false,
+                header: [
+                    {
+                        title: "#",
+                        style: {
+                            width: 10
+                        }
+                    },
+                    {
+                        title: raumname,
+                        style: {
+                            width: 50
+                        }
+                    }
+                ],
+                table: Array.from(raeume, (raum, index) => ([
+                    index + 1,
+                    raum,
+                ])),
+            },
+            footer: {
+                text: hinweis,
+            },
+            pageEnable: true,
+            pageLabel: "Page ",
+        };
+    </script>
+
+    <script th:inline="javascript">
+        var zutrittsprotokoll = /*[[${zutrittsprotokoll}]]*/ "";
+        var raum = /*[[${raum}]]*/ "";
+        if (raum === "gesamt") {
+            raum = facility;
+        }
+
+        window.addEventListener("load", (event) => {
+            if (zutrittsprotokoll != null) {
+                generatePDFzutritt();
+            }
+        });
+
+        function generatePDFzutritt() {
+            if (zutrittsprotokoll != null) {
+                var pdfObject = jsPDFInvoiceTemplate.default(content2);
+            }
+        }
+
+        if (zutrittsprotokoll != null) {
+            var content2 = {
+                outputType: jsPDFInvoiceTemplate.OutputType.Save,
+                returnJsPDFDocObject: true,
+                fileName: zp + raum + " " + universitaet + time + " .pdf",
+                orientationLandscape: false,
+                compress: true,
+                logo: {
+                    src: "images/UniversityLogo.png",
+                    type: 'PNG', //optional, when src= data:uri (nodejs case)
+                    width: 60, //aspect ratio = width/height
+                    height: 20,
+                    margin: {
+                        top: 0, //negative or positive num, from the current position
+                        left: 0 //negative or positive num, from the current position
+                    }
+                },
+                business: {
+                    name: zp + raum
+                },
+                invoice: {
+                    label: "Invoice #: ",
+                    headerBorder: false,
+                    tableBodyBorder: false,
+                    header: [
+                        {
+                            title: "#",
+                            style: {
+                                width: 6
+                            }
+                        },
+                        {
+                            title: "LogID",
+                            style: {
+                                width: 10
+                            }
+                        },
+                        {
+                            title: "KeycardID",
+                            style: {
+                                width: 20
+                            }
+                        },
+                        {
+                            title: tuerid,
+                            style: {
+                                width: 15
+                            }
+                        },
+                        {
+                            title: ergebnis,
+                            style: {
+                                width: 29
+                            }
+                        },
+                        {
+                            title: erstellungszeitpunkt,
+                            style: {
+                                width: 55
+                            }
+                        },
+                        {
+                            title: raumid,
+                            style: {
+                                width: 15
+                            }
+                        },
+                        {
+                            title: gebaeudename,
+                            style: {
+                                width: 30
+                            }
+                        },
+                        {
+                            title: istsen,
+                            style: {
+                                width: 10
+                            }
+                        }
+                    ],
+                    table: Array.from(zutrittsprotokoll, (eintrag, index) => ([
+                        index + 1,
+                        eintrag[0],
+                        eintrag[1],
+                        eintrag[2],
+                        eintrag[3],
+                        eintrag[4],
+                        eintrag[5],
+                        eintrag[6],
+                        eintrag[8]
+                    ])),
+                },
+                footer: {
+                    text: hinweis,
+                },
+                pageEnable: true,
+                pageLabel: "Page ",
+            };
+        }
+    </script>
+
+</body>
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "gebaeude";
+    var chosenBuilding = /*[[${facility}]]*/ "";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption + "&gebaeudeName=" + chosenBuilding;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption + "&gebaeudeName=" + chosenBuilding;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${name}">Name</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/user.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-user"></i>
+            <h2 id="page-title" th:text="${name}"></h2>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="details" class="table-title">Details</div>
+                <div class="table-item">
+                    <div class="item-name">Name</div>
+                    <div class="item-content" th:text="${name}"></div>
+                </div>
+                <div class="table-item">
+
+                    <div class="item-name" th:text="#{benutzername}">Benutzername</div>
+                    <div class="item-content" th:text="${benutzername}"></div>
+                </div>
+                <div class="table-item">
+                    <div class="item-name" th:text="#{rolle}"></div>
+
+                    <th:block th:if="${rolle == 'Verwaltungsleitung'}">
+                        <div class="item-content" th:text="#{vl}"></div>
+                    </th:block>
+                    <th:block th:if="${rolle == 'Verwaltungsmitarbeiter'}">
+                        <div class="item-content" th:text="#{vm}"></div>
+                    </th:block>
+                    <th:block th:if="${rolle == 'Nutzer'}">
+                        <div class="item-content" th:text="#{nutzer}"></div>
+                    </th:block>
+                </div>
+                <div class="table-item">
+                    <div class="item-name">E-Mail</div>
+                    <div class="item-content" th:text="${email}"></div>
+                </div>
+                <div class="table-item">
+
+                    <div class="item-name" th:text="#{adresse}">Adresse</div>
+                    <div class="item-content" th:text="${adresse}"></div>
+                </div>
+            </div>
+
+
+            <div class="col">
+
+                <th:block>
+
+                    <div class="table-title-right">
+                        <div class="player-one-title" th:text="#{zutrittsberechtigungen}">
+
+                        </div>
+                        <div class="player-two-title">
+                            <th:block th:if="${keycard_id == null}">
+                                <button style="color: grey;" class="bearbeiten" disabled
+                                    th:text="#{btn_bearbeiten}"></button>
+                            </th:block>
+                            <th:block th:if="${keycard_id != null}">
+                                <a th:href="@{/zutritt_bearbeiten(keycard_id=${keycard_id})}">
+                                    <button class="bearbeiten" th:text="#{btn_bearbeiten}"></button>
+                                </a>
+                            </th:block>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/user}">
+                        <input style="display: none;" th:value="${benutzername}" th:name="benutzername" />
+                        <div class="table-item">
+                            <div id="dropdown-raum">
+                                <div class="player-one" th:text="#{keycard_auswählen}"></div>
+                                <div class="player-two">
+                                    <select onchange="hideItems()" th:name="chosenKeycard" id="select_keycard">
+                                        <th:block th:if="${keycard_id != null}">
+                                            <option th:text="|#${keycard_id}|"></option>
+                                        </th:block>
+                                        <th:block th:if="${keycard_id == null}">
+                                            <option selected="selected" value="null" th:text="#{keine_ausgewählt}">Keine
+                                                ausgewählt</option>
+                                        </th:block>
+                                        <option th:if="${keycard_id != keycard[0]}" th:each="keycard : ${keycards}"
+                                            th:value="${keycard[0]}" th:text="|#${keycard[0]}|"></option>
+                                    </select>
+                                </div>
+                                <button hidden id="auswahl_btn" class="auswählen player-two" type="submit"
+                                    th:text="#{auswaehlen}"></button>
+                            </div>
+                        </div>
+                        <th:block th:if="${anzahlKeycards == 0}">
+                            <h4 style="margin-top: 10px;" class=" fehlermeldung"
+                                th:text="|${benutzername} #{keineCards}|"></h4>
+                        </th:block>
+                    </form>
+
+
+
+
+
+                    <th:block th:if="${keycard_id == null}">
+
+                    </th:block>
+                    <th:block th:if="${keycard_id != null}">
+                        <div id="keycardGiven">
+                            <div class="table-item">
+                                <div class="player-one" th:text="#{startdatum}"></div>
+                                <div class="player-two" th:text="${anfangstag}"></div>
+                            </div>
+                            <div class="table-item">
+                                <div class="player-one" th:text="#{enddatum}"></div>
+                                <div class="player-two" th:text="${endtag}"></div>
+                            </div>
+                            <div class="table-item">
+                                <div class="player-one">Status</div>
+                                <div class="player-two openModal">
+                                    <th:block th:if="${status == 'Aktiviert'}">
+                                        <div th:text="#{aktiviert}"></div>
+                                    </th:block>
+                                    <th:block th:if="${status == 'Deaktiviert'}">
+                                        <div th:text="#{deaktiviert}"></div>
+                                    </th:block>
+                                    <th:block th:if="${status == 'Gesperrt'}">
+                                        <div th:text="#{gesperrt}"></div>
+                                    </th:block>
+
+                                    <button class="dropdown-toggle" type="button" data-toggle="modal"
+                                        data-target="#myModal">
+                                        <span class="caret"></span>
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-md">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" th:text="#{status_ändern}"></h4>
+                                                <button style="color: white;" type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" th:action="@{/status_aendern}"
+                                                    enctype="multipart/form-data">
+                                                    <p th:text="#{modal_status_text}"></p>
+                                                    <input name="redirectPage" type="hidden" th:value="user">
+                                                    <input name="keycard_id" type="hidden" th:value="${keycard_id}">
+                                                    <select th:name="chosenStatus" id="select_keycard">
+                                                        <option th:text="#{aktiviert}"></option>
+                                                        <option th:text="#{gesperrt}"></option>
+                                                    </select>
+                                                    <button class="modal-button" type="submit"
+                                                        th:text="#{btn_bestaetigen}">Bestätigen</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-item">
+                                <button class="table-btn" type="button" data-toggle="modal"
+                                    data-target="#erinnerungsModal" th:text="#{keycard_ubertragen}"></button>
+                                <div class="modal fade" id="erinnerungsModal" role="dialog">
+                                    <div class="modal-dialog modal-md">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title"
+                                                    th:text="|#{keycard_ubertragen} #${keycard_id} |">
+                                                </h4>
+                                                <button style="color: white;" type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+
+
+                                                <form method="post" th:action="@{/updateOwner}"
+                                                    enctype="multipart/form-data">
+                                                    <p th:text="#{modal_übertragen_text}"></p>
+                                                    <p id="text_user_not_found">Bitte bestätigen Sie ihre Eingabe</p>
+                                                    <input name="redirectPage" type="hidden" th:value="user">
+                                                    <input name="keycard_id" type="hidden" th:value="${keycard_id}">
+                                                    <input class="newOwnerInput" type="text" name="neuerOwner"
+                                                        th:placeholder="#{benutzername_eingeben}">
+                                                    <a id="searchUserBtn" onclick="checkNewOwnerInput()"
+                                                        class="modal-button" th:text="#{btn_bestaetigen}"></a>
+                                                    <button hidden type="submit" id="uebertragen_submit"></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="table-item">
+                                <button class="table-btn" type="button" data-toggle="modal"
+                                    data-target="#nachrichtModal" th:text="#{erinnerung_senden}"></button>
+                                <div class="modal fade" id="nachrichtModal" role="dialog">
+                                    <div class="modal-dialog modal-md">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" th:text="|#{nachricht_an} ${benutzername}|">
+                                                </h4>
+                                                <button style="color: white;" type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" th:action="@{/erinnerung_gesendet}"
+                                                    enctype="multipart/form-data">
+                                                    <label th:text="#{an}"></label>
+                                                    <input id="toEmail" class="form-control" type="text" name="toEmail"
+                                                        placeholder="toEmail" required>
+                                                    <br>
+                                                    <label th:text="#{von}"></label>
+                                                    <input id="fromEmail" class="form-control" type="text"
+                                                        name="fromEmail" placeholder="fromEmail" required>
+                                                    <br>
+                                                    <label th:text="#{betreff}"></label>
+                                                    <input id="betreff" class="form-control" type="text" name="subject"
+                                                        placeholder="Betreff" required>
+                                                    <br>
+                                                    <label th:text="#{nachricht}"></label>
+                                                    <textarea class="form-control" name="body" rows="4" cols="50"
+                                                        required></textarea>
+                                                    <br>
+                                                    <h1></h1>
+                                                    <button id="absenden-btn" type="submit" value="Senden"
+                                                        class="button" th:text="#{absenden}">Absenden</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-item">
+                                <a id="test" th:href="@{/zutrittsuebersicht_einsehen(keycard_id=${keycard_id})}">
+                                    <button class="table-btn" th:text="#{zutrittsberechtigungen_einsehen}"></button>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </th:block>
+                    <button id="btn-modal" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                        data-target="#myModal"></button>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" th:text="#{keycard_ubertragen}">
+                                    </h4>
+                                    <button style="color: white;" type="button" class="close"
+                                        data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-start">
+                                    <i id="icon" class="fa fa-check"></i>
+
+                                    <h5 style="background-color: #212121; margin-left: 20px; margin-top: 25px;"
+                                        class="d-flex justify-content-center fehlermeldung"
+                                        th:text="#{modal_übertragen}"></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<script>
+    function hideItems() {
+        if (document.querySelector('#select_keycard').value == "null") {
+            location.reload();
+        } else {
+            document.querySelector('#auswahl_btn').click();
+        }
+
+    }
+</script>
+<!-- KEYCARD ÜBERTRAGEN START -->
+<script type="text/javascript" th:inline="javascript">
+    var redirectFrom = /*[[${param.redirectFrom}]]*/ "";
+    if (redirectFrom != null) {
+        document.querySelector('#btn-modal').click();
+    }
+</script>
+<script type="text/javascript" th:inline="javascript">
+    function checkNewOwnerInput() {
+        var allUsers = /*[[${users}]]*/ "";
+        var benutzername = /*[[${benutzername}]]*/ "";
+
+
+        let myReferenceDiv = document.querySelector('#searchUserBtn');
+        let inputNewOwner = myReferenceDiv.previousElementSibling.value;
+
+        var userWasFound = false;
+        for (let i = 0; i < allUsers.length; i++) {
+            console.log(inputNewOwner + "???" + allUsers[i]);
+            if (allUsers[i] == inputNewOwner) {
+
+                userWasFound = true;
+                break;
+            }
+        }
+        if (userWasFound == true) {
+            document.querySelector('#text_user_not_found').innerHTML = "Bitte bestätigen Sie ihre Eingabe";
+            document.querySelector('#uebertragen_submit').click();
+        } else {
+            myReferenceDiv.previousElementSibling.focus();
+            document.querySelector('#text_user_not_found').innerHTML = "Der eingegebene Nutzer existiert nicht";
+
+            document.getElementById("text_user_not_found").style.color = "red";
+        }
+    }
+</script>
+<!-- KEYCARD ÜBERTRAGEN END -->
+<!-- ERINNERUNG SENDEN START -->
+<script th:inline="javascript">
+    var toEmail = /*[[${email}]]*/ "";
+    var fromEmail = /*[[${fromEmail}]]*/ "";
+    var keycard_id = /*[[${keycard_id}]]*/ "";
+    var name = /*[[${name}]]*/ "";
+    document.title = name;
+
+    if (toEmail != null && fromEmail != null) {
+        document.getElementById("toEmail").value = toEmail;
+
+        document.getElementById("fromEmail").value = fromEmail;
+    }
+
+    if (keycard_id != null) {
+        document.getElementById("betreff").value = "Keycard #" + keycard_id;
+    }
+
+</script>
+<!-- ERINNERUNG SENDEN END -->
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "user";
+    var chosenBenutzer = /*[[${param.benutzername}]]*/ "";
+    var chosenKeycard = /*[[${keycard_id}]]*/ "";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            if (chosenKeycard != null) {
+                var link = sitename + "?lang=" + selectedOption + "&benutzername=" + chosenBenutzer + "&chosenKeycard=" + chosenKeycard;
+            } else {
+                console.log(chosenKeycard);
+                var link = sitename + "?lang=" + selectedOption + "&benutzername=" + chosenBenutzer;
+            }
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            if (chosenKeycard != null) {
+                var link = sitename + "?lang=" + selectedOption + "&benutzername=" + chosenBenutzer + "&chosenKeycard=" + chosenKeycard;
+            } else {
+                console.log(chosenKeycard);
+                var link = sitename + "?lang=" + selectedOption + "&benutzername=" + chosenBenutzer;
+            }
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

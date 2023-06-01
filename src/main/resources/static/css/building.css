@@ -1,0 +1,101 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+.table-title {
+    margin-bottom: 10px;
+
+}
+
+#startdatum, #enddatum {
+    border: none;
+}
+
+.table-item{
+    height: 64px;
+    width: 400px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #888;
+    border-color: var(--brightgrey);
+    background-color: var(--darkgrey);
+}
+
+.item-name {
+    background: var(--darkgrey);
+    color: var(--brightgrey);
+    font-size: 12px;
+}
+
+.item-content {
+    background: var(--darkgrey);
+}
+
+.button {
+    width: 200px;
+    height: 40px;
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    font-size: small;
+    margin-top: 15px;
+}
+
+.raumplan-button {
+    width: 100px;
+    height: 40px;
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    font-size: small;
+    float: right;
+    margin-top: 7px;
+}
+
+
+
+#dropdown-raum {
+    display: inline-block; 
+    width: 100%;
+    background-color: var(--darkgrey);
+}
+
+.dropdown-btn {
+    color: white;
+}
+
+.player-one {
+    background-color: var(--darkgrey);
+    float: left;
+    padding-top: 15px;
+}
+
+.player-two {
+    background-color: var(--darkgrey);
+    float: right;
+    padding-top: 9px;
+}
+
+#zutritt_starttag, #zutritt_endtag, #keycard_starttag, #keycard_endtag{
+    margin-top: 5px;
+    border: none;
+}
+
+select {
+    border: none;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/*verkleinert das table-item*/
+@media screen and (max-width: 575px) {
+    .table-item {width: 300px;}
+    .button {width: 100px;}
+  }

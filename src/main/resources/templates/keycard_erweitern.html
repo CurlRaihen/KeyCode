@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{erweitern_key_headline}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/antrag_keycard.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-file"></i>
+            <h2 id="page-title" th:text="#{erweitern_key_headline}">Antrag - Keycard erweitern</h2>
+        </div>
+        <th:block th:if="${anzahlKeycards > 0 && anzahlActiveKeycards > 0}">
+            <form method="post" th:action="@{/antragfertig}" enctype="multipart/form-data">
+                <input id="kommentar" class="form-control" name="kommentar" type="hidden" value="Hello">
+                <div class="keycard-dropdown">
+                    <h6 th:text="#{keycard_dropdown}">Keycard auswählen</h6>
+                </div>
+                <select class="btn dropdown-toggle dropdown-btn" th:name="art" id="select_keycard">
+                    <option th:if="${keycard_id != keycard[0]}" th:each="keycard : ${keycards}" th:value="${keycard[0]}"
+                        th:text="|#${keycard[0]}|"></option>
+                </select>
+                <div class="formular">
+                    <div style="display: none;" class="date">
+                        <div class="row">
+                            <div class="col">
+                                <h6 th:text="#{eingabe_startdatum}">Startdatum eingeben</h6>
+                                <input id="startdatum" type="date" class="form-control" name="anfangstag"
+                                    min="tomorrow">
+                            </div>
+                            <div class="col">
+                                <h6 th:text="#{eingabe_enddatum}">Enddatum eingeben</h6>
+                                <input type="date" id="enddatum" name="endtag"><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="facilites">
+                        <div class="row">
+                            <div class="col">
+                                <h6 th:text="#{raumname}">Raumname</h6>
+                                <input type="text" id="raumname" name="raum" placeholder="IM-SR004">
+                                <div class="icon-btn" id="mehrRaeume">
+                                    <a onclick="moreRooms()">
+                                        <i id="icon" class="fa fa-plus icon-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h6 th:text="#{bereichname}">Bereichsname</h6>
+                                <input type="text" id="bereichsname" name="bereich" placeholder="Lehrstuhl Lehner">
+                                <div class="icon-btn" id="mehrBereiche">
+                                    <a onclick="moreBereiche()">
+                                        <i id="icon" class="fa fa-plus icon-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="berechtigung">
+                        <h6 th:text="#{berechtigungsgrund}">Berechtigungsgrund (optional)</h6>
+                        <input id="myFile" type="file" name="berechtigung" accept=".pdf">
+                    </div>
+
+                    <a onclick="checkInput()">
+                        <button type="button" data-toggle="" data-target="" class="button"
+                            th:text="#{btn_absenden}"></button>
+                    </a>
+                    <button id="btn-modal-erfolg" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                        data-target="#myModalErfolg">OPEN MODAL</button>
+                    <div class="modal fade" id="myModalErfolg" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 id="modal-title-erfolg" class="modal-title"
+                                        th:text="#{antrag_bestätigen_headline}"></h4>
+                                    <button style="color: white;" type="button" class="close"
+                                        data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <button id="btn-submit" class="button" type="submit" th:text="#{btn_bestaetigen}">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btn-modal-fehler" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                        data-target="#myModalFehler">OPEN MODAL</button>
+                    <div class="modal fade" id="myModalFehler" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 id="modal-title-fehler" class="modal-title"
+                                        th:text="#{fehler_Raumeingabe_headline}"></h4>
+                                    <button style="color: white;" type="button" class="close"
+                                        data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-text" th:text="#{fehler_Raumeingabe_text}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btn-modal-empty" hidden class="dropdown-toggle" type="button" data-toggle="modal"
+                        data-target="#myModalEmpty"></button>
+                    <div class="modal fade" id="myModalEmpty" role="dialog">
+                        <div class="modal-dialog modal-md">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 id="modal-title-fehler" class="modal-title"
+                                        th:text="#{keine_Raumeingabe_headline}"></h4>
+                                    <button style="color: white;" type="button" class="close"
+                                        data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="modal-text" th:text="#{keine_Raumeingabe_text}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </th:block>
+        <th:block th:if="${anzahlKeycards > 0 && anzahlActiveKeycards == 0}">
+            <h1 th:text="#{fehler_keine_active_keycard}" class="d-flex justify-content-center fehlermeldung"></h1>
+        </th:block>
+        <th:block th:if="${anzahlKeycards == 0}">
+            <h1 th:text="#{fehler_keine_keycard}" class="d-flex justify-content-center fehlermeldung"></h1>
+        </th:block>
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<script type="text/javascript" th:inline="javascript">
+
+    //CHECK INPUT FOR ROOMS AND ARES
+    function checkInput() {
+
+
+        //CHECK ROOM AND AREA
+        var allRooms = /*[[${allRooms}]]*/ "";
+        var allAreas = /*[[${allAreas}]]*/ "";
+        var bereichWasFound = false;
+        var roomWasFound = false;
+        var inputRooms = document.querySelectorAll('[name="raum"]');
+        var inputAreas = document.querySelectorAll('[name="bereich"]');
+        //CHECK IF INPUT ROOM WAS FOUND
+        for (let i = 0; i < inputRooms.length; i++) {
+            for (let y = 0; y < allRooms.length; y++) {
+                if (inputRooms[i].value == allRooms[y]) {
+                    roomWasFound = true;
+                    break;
+                } else {
+                    if (inputRooms[i].value == "") {
+                        roomWasFound = true;
+                        break;
+                    } else {
+                        roomWasFound = false;
+                    }
+                }
+            }
+            if (roomWasFound == false) {
+                break;
+            }
+        }
+        //CHECK IF INPUT AREA WAS FOUND
+        for (let i = 0; i < inputAreas.length; i++) {
+            for (let y = 0; y < allAreas.length; y++) {
+
+                if (inputAreas[i].value == allAreas[y]) {
+                    bereichWasFound = true;
+                    break;
+                } else {
+                    if (inputAreas[i].value == "") {
+                        bereichWasFound = true;
+                        break;
+                    } else {
+                        bereichWasFound = false;
+                    }
+                }
+            }
+            if (bereichWasFound == false) {
+                break;
+            }
+        }
+
+        //CHECKS IF INPUT ROOM/AREA WAS FOUND OR IS EMPTY
+        if (inputRooms[0].value == "" && inputAreas[0].value == "") {
+            document.getElementById("btn-modal-empty").click();
+            return;
+        } else if (inputRooms[0].value != "" && inputAreas[0].value == "") {
+            if (roomWasFound == true) {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            }
+        } else if (inputRooms[0].value == "" && inputAreas[0].value != "") {
+            if (bereichWasFound == true) {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            }
+        } else {
+            if (bereichWasFound == false || roomWasFound == false) {
+                document.getElementById("btn-modal-fehler").click();
+                return;
+            } else {
+                document.getElementById("btn-modal-erfolg").click();
+                return;
+            }
+        }
+
+    }
+</script>
+
+<!-- GENREATE INPUT FIELDS START -->
+<script>
+    //Set Min and Max Date for Startdatum
+    //    var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    var tomorrow = new Date(Date.now()).toISOString().split('T')[0];
+    var tomorrowOneYear = new Date(Date.now() + 24 * 60 * 60 * 365000).toISOString().split('T')[0];
+    document.getElementById("startdatum").setAttribute('min', tomorrow);
+    document.getElementById("startdatum").setAttribute('max', tomorrowOneYear);
+    document.getElementById("enddatum").setAttribute('min', tomorrow);
+    document.getElementById("enddatum").setAttribute('max', tomorrowOneYear);
+
+    //Insert form after plus button click
+    function moreRooms() {
+        let myReferenceDiv = document.querySelector('#mehrRaeume');
+        let prev = myReferenceDiv.previousElementSibling.value;
+        console.log(prev);
+        if (prev != "") {
+            let clone = document.querySelector('#raumname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrRaeume').insertAdjacentElement("beforebegin", clone);
+        } else {
+            myReferenceDiv.previousElementSibling.focus();
+        }
+
+    }
+    function moreBereiche() {
+        let myReferenceDiv = document.querySelector('#mehrBereiche');
+        let prev = myReferenceDiv.previousElementSibling.value;
+        console.log(prev);
+        if (prev != "") {
+            let clone = document.querySelector('#bereichsname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrBereiche').insertAdjacentElement("beforebegin", clone);
+        } else {
+            myReferenceDiv.previousElementSibling.focus();
+        }
+    }
+</script>
+<!-- GENREATE INPUT FIELDS END -->
+
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "antrag_auf_erweiterung";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

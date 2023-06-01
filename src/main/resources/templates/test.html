@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{erweitern_key_headline}"></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/antrag_keycard.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+</head>
+
+<body>
+
+    <div class="container">
+        <nav th:insert="navbar.html :: navbar"> </nav>
+        <div id="container-content">
+            <div id="page-overview">
+                <i id="icon" class="fa fa-file"></i>
+                <h2 id="page-title" th:text="#{erweitern_key_headline}">Antrag - Keycard erweitern</h2>
+            </div>
+            <th:block th:if="${anzahlKeycards > 0}">
+                <form method="post" th:action="@{/antragfertig}" enctype="multipart/form-data">
+                    <input id="kommentar" class="form-control" name="kommentar" type="hidden" value="Hello">
+                    <div class="keycard-dropdown">
+                        <h6 th:text="#{keycard_dropdown}">Keycard auswählen</h6>
+                    </div>
+                    <select class="btn dropdown-toggle dropdown-btn" th:name="art" id="select_keycard">
+                        <option th:if="${keycard_id != keycard[0]}" th:each="keycard : ${keycards}"
+                            th:value="${keycard[0]}" th:text="|#${keycard[0]}|"></option>
+                    </select>
+                    <div class="formular">
+                        <div style="display: none;" class="date">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 th:text="#{eingabe_startdatum}">Startdatum eingeben</h6>
+                                    <input id="startdatum" type="date" class="form-control" name="anfangstag"
+                                        min="tomorrow">
+                                </div>
+                                <div class="col">
+                                    <h6 th:text="#{eingabe_enddatum}">Enddatum eingeben</h6>
+                                    <input type="date" id="enddatum" name="endtag"><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="facilites">
+                            <div class="row">
+                                <div class="col">
+                                    <h6 th:text="#{raumname}">Raumname</h6>
+                                    <input type="text" id="raumname" name="raum" placeholder="IM-SR004"><br>
+                                    <div class="icon-btn" id="mehrRaeume">
+                                        <a onclick="moreRooms()">
+                                            <i id="icon" class="fa fa-plus icon-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <h6 th:text="#{bereichname}">Bereichsname</h6>
+                                    <input type="text" id="bereichsname" name="bereich"
+                                        placeholder="Lehrstuhl Lehner"><br>
+                                    <div class="icon-btn" id="mehrBereiche">
+                                        <a onclick="moreBereiche()">
+                                            <i id="icon" class="fa fa-plus icon-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="berechtigung">
+                            <h6 th:text="#{berechtigungsgrund}">Berechtigungsgrund (optional)</h6>
+                            <input id="myFile" type="file" name="berechtigung" accept=".pdf">
+                        </div>
+
+                        <button th:text="#{btn_absenden}" class="button">Absenden</button>
+                        <!-- Modal -->
+
+                    </div>
+                </form>
+            </th:block>
+            <th:block th:if="${anzahlKeycards == 0}">
+                <h1 th:text="#{fehler_keine_keycard}" class="d-flex justify-content-center fehlermeldung">Sie besitzen
+                    aktuell noch keine Keycard</h1>
+            </th:block>
+        </div>
+        <h2>Activate Modal with JavaScript</h2>
+        <!-- Trigger the modal with a button -->
+        <button onclick="checkRoomInput()" type="button" class="btn btn-info btn-lg" id="myBtn">Open Modal</button>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+        //CHECK INPUT FOR ROOMS AND ARES
+        function checkRoomInput() {
+            var allRooms = /*[[${allRooms}]]*/ "";
+            var allAreas = /*[[${allAreas}]]*/ "";
+            var roomWasFound = false;
+            var inputRooms = document.querySelectorAll('[name="raum"]');
+            for (let i = 0; i < inputRooms.length; i++) {
+                for (let y = 0; y < allRooms.length; y++) {
+                    if (inputRooms[i].value == allRooms[y]) {
+                        console.log(inputRooms[i].value);
+                        roomWasFound = true;
+                    }
+                }
+            }
+            if (roomWasFound == false) {
+                console.log("Kein Raum mit diesem Namen gefunden");
+                jQuery.noConflict();
+                $('#myModal').modal('show');
+
+
+            }
+        }
+        //Set Min and Max Date for Startdatum
+        var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        var tomorrowOneYear = new Date(Date.now() + 24 * 60 * 60 * 365000).toISOString().split('T')[0];
+        document.getElementById("startdatum").setAttribute('min', tomorrow);
+        document.getElementById("startdatum").setAttribute('max', tomorrowOneYear);
+
+        //Set Min and Max for Enddatum
+
+        //Insert form after plus button click
+        function moreRooms() {
+            let clone = document.querySelector('#raumname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrRaeume').insertAdjacentElement("beforebegin", clone);
+        }
+        function moreBereiche() {
+            let clone = document.querySelector('#bereichsname').cloneNode(true);
+            clone.value = "";
+            document.querySelector('#mehrBereiche').insertAdjacentElement("beforebegin", clone);
+        }
+    </script>
+    <!-- SWITCH LANGUAGE START -->
+
+    <script type="text/javascript" th:inline="javascript">
+        var sitename = "antrag_auf_erweiterung";
+        $(document).ready(function () {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                var link = sitename + "?lang=" + selectedOption;
+                if (selectedOption != '') {
+                    window.location.replace(link);
+                }
+            });
+            $("#localesSide").change(function () {
+                var selectedOption = $('#localesSide').val();
+                var link = sitename + "?lang=" + selectedOption;
+                if (selectedOption != '') {
+                    window.location.replace(link);
+                }
+            });
+        });
+    </script>
+    <!-- SWITCH LANGUAGE END -->
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: var(--black);
+    color: white;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+#container-content {
+    padding: 0px 10% 0px 10%;
+    background-color: var(--black);
+    min-height: 64vh;
+}
+
+#page-overview {
+    padding: 0px 0px 50px 0px;
+}
+
+#page-title {
+    padding: 10px 0px 0px 0px;
+}
+
+#icon {
+    font-size: 40px;
+    display: inline-block;
+    border-radius: 150px;
+    box-shadow: 0 0 2px #888;
+    padding: 0.5em 0.6em;
+    padding: 20px;
+}
+
+.table-item{
+    height: 64px;
+    width: 400px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #888;
+    border-color: var(--brightgrey);
+    background-color: var(--darkgrey);
+    
+}
+
+.item-name {
+    background: var(--darkgrey);
+    color: var(--brightgrey);
+    font-size: 12px;
+}
+
+.item-content {
+    background: var(--darkgrey);
+}
+
+.fehlermeldung {
+    color: var(--textgreen);
+}
+
+  /*setzt das padding von column 2 zurück*/
+  @media screen and (max-width: 787px) {
+    .col {margin-bottom: 20px;}
+}
+
+select {
+    border: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/*verkleinert das table-item*/
+@media screen and (max-width: 575px) {
+    .table-item {width: 300px;}
+    .table-title-right {width: 300px;}
+    .fehlermeldung {width: 300px;}
+  }
+
+

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{antraege_bearbeiten}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/antrag_keycard.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="page-overview">
+            <i id="icon" class="fa fa-file"></i>
+            <h2 id="page-title" th:text="|#{antrag} #${param.antrag_id} -|"></h2>
+            <h2 th:text="#{ab_erweitern_headline}"></h2>
+        </div>
+        <div class="keycard-dropdown">
+            <h6 th:text="#{betroffene_keycard}"></h6>
+            <div class="keycardnr" th:text="${keycard_id}"></div>
+        </div>
+        <form method="post" th:action="@{/antrag_bearbeitet}" enctype="multipart/form-data">
+            <input name="antrag_id" th:value="${param.antrag_id}" hidden><br>
+            <div class="formular">
+                <div class="date">
+                    <div class="row">
+                        <div class="col">
+                            <h6 th:text="#{startdatum}"></h6>
+                            <div class="date-field" th:text="${anfangstag}"></div>
+                        </div>
+                        <div class="col">
+                            <h6 th:text="#{enddatum}"></h6>
+                            <div class="date-field" th:text="${endtag}"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="facilites">
+                    <div class="row">
+                        <div class="col">
+                            <h6 th:text="#{raeume}"></h6>
+                            <th:block th:if="${anzahlRaeume > 0}">
+                                <div th:each="raum : ${raeume}">
+                                    <th:block th:with="randomId=${#strings.randomAlphanumeric(10)}">
+                                        <div class="raum-item" th:name="${randomId}" th:id="${randomId}">
+                                            <p class="raum-title" th:text="${raum[0]}"></p>
+                                            <button th:name="${randomId}" onclick="deleteMyself(name)"
+                                                class="raum-btn">x</button>
+                                            <input name="raum" th:value="${raum[1]}" hidden><br>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${anzahlRaeume == 0}">
+                                <h3 style="margin: 40px;" class="d-flex justify-content-center fehlermeldung"
+                                    th:text="#{fehler_kein_raum}"></h3>
+                            </th:block>
+                        </div>
+                        <div class="col">
+                            <h6 th:text="#{bereiche}"></h6>
+                            <th:block th:if="${anzahlBereiche > 0}">
+                                <div th:each="bereich : ${bereiche}">
+                                    <th:block th:with="randomId=${#strings.randomAlphanumeric(10)}">
+                                        <div class="raum-item" th:name="${randomId}" th:id="${randomId}">
+                                            <p class="raum-title" th:text="${bereich[0]}"></p>
+                                            <button th:name="${randomId}" onclick="deleteMyself(name)"
+                                                class="raum-btn">x</button>
+                                            <input name="bereich" th:value="${bereich[1]}" hidden><br>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${anzahlBereiche == 0}">
+                                <h3 style="margin: 40px;" class="d-flex justify-content-center fehlermeldung"
+                                    th:text="#{fehler_kein_bereich}"></h3>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="berechtigung">
+                    <h6 th:text="#{berechtigungsgrund}"></h6>
+                    <a id="berechtigungsbutton" class="button-berechtigung" th:text="#{btn_ansehen}"><div class="button-berechtigung"></div></a>
+                </div>
+
+                <button onclick="checkEmptyInput()" class="button" type="button" th:text="#{btn_accepted}"></button>
+                <button hidden id="call_accept_btn" type="button" data-toggle="modal" data-target="#modalAccept"
+                    th:text="#{btn_accepted}"></button>
+                <div class="modal fade" id="modalAccept" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" th:text="|#{akzeptieren_modal_text}${param.antrag_id}|"></h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <button type="submit" name="status" value="akzeptiert" id="akzeptieren-btn"
+                                    class="button" th:text="#{btn_bestaetigen}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="btn-modal-empty" hidden class="dropdown-toggle" type="button" data-toggle="modal" data-target="#myModalEmpty"></button>
+                <div class="modal fade" id="myModalEmpty" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 id="modal-title-fehler" class="modal-title" th:text="#{voller_Entzug_headline}"></h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="modal-text" th:text="#{erweitern_voller_Entzug_text}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="button" id="ablehnen-btn" type="button" data-toggle="modal" data-target="#modalDenied"
+                    th:text="#{btn_denied}"></button>
+                <div class="modal fade" id="modalDenied" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" th:text="|#{ablehnen_modal_text}${param.antrag_id}|"></h4>
+                                <button style="color: white;" type="button" class="close"
+                                    data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p th:text="#{begruendung}"></p>
+                                <textarea class="form-control" name="bearbeiterMessage" rows="3" cols="50"></textarea>
+                                <button type="submit" name="status" value="abgelehnt" id="ablehnen-btn" class="button"
+                                    th:text="#{btn_denied}"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+    <footer th:insert="footer.html :: footer"> </footer>
+    <script>
+
+function checkEmptyInput() {
+        //CHECKS IF INPUT ROOM/AREA WAS FOUND OR IS EMPTY
+        var inputRoomsSize = document.querySelectorAll('[name="raum"]').length;
+        var inputAreasSize = document.querySelectorAll('[name="bereich"]').length;
+        
+        
+        if(inputRoomsSize == 0 && inputAreasSize == 0) {
+            
+            document.getElementById("btn-modal-empty").click();
+            return;
+        } else {
+            document.getElementById("call_accept_btn").click();
+        }
+    }
+
+        //Set Min and Max Date for Startdatum
+        var tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        var tomorrowOneYear = new Date(Date.now() + 24 * 60 * 60 * 365000).toISOString().split('T')[0];
+        document.getElementById("startdatum").setAttribute('min', tomorrow);
+        document.getElementById("startdatum").setAttribute('max', tomorrowOneYear);
+
+        //Set Min and Max for Enddatum
+
+
+
+
+
+        //Delete Rooms/Bereiche
+        function deleteMyself(id) {
+            document.getElementById(id).remove();
+        }
+    </script>
+</body>
+<!-- SWITCH LANGUAGE START -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script type="text/javascript" th:inline="javascript">
+
+    var answer = /*[[${answer}]]*/ "";
+
+    var downButton = document.getElementById("berechtigungsbutton");
+    if (answer.datei != null) {
+        downButton.href = "data:application/pdf;base64," + answer.datei;
+        downButton.download = answer.benutzername + " Antrag " + answer.antrag_id + ".pdf";
+    }
+    else {
+        downButton.innerText = "Keine PDF Datei";
+    }
+
+    var sitename = "antrag_bearbeiten";
+    var antrag_id = /*[[${param.antrag_id}]]*/ "";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption + "&antrag_id=" + antrag_id;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption + "&antrag_id=" + antrag_id;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+
+
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

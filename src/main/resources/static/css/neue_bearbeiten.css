@@ -1,0 +1,36 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+
+.raum-item {
+    width: 150px;
+    height: 40px;
+    background-color: var(--brightgrey);
+    border: 1px solid var(--bordergry);
+    border-radius: 20px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.raum-title {
+    background-color: var(--brightgrey);
+    color: white;
+    margin-left: 10px;
+    margin-top: 7px;
+    float: left;
+}
+
+.raum-btn  {
+    float: right;
+    margin-right: 20px;
+    margin-top: 6px;
+    background-color: var(--brightgrey);
+    border: none;
+    color: black;
+}

@@ -1,0 +1,49 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+.content {
+    background-color: var(--black);
+    color: white;
+}
+
+.card-header {
+    background-color: var(--darkgrey);
+    color: white;
+    
+}
+
+
+.card {
+    background-color: var(--darkgrey);
+    border: 2px solid var(--bordergry);
+}
+
+.card-body input, #toEmail, #fromEmail, .form-control  {
+    background-color: var(--bordergry);
+    border: 1px solid var(--bordergry);
+    color: white;
+}
+
+
+
+.button {
+    width: 100%;
+    height: 50px;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    border: 1px solid var(--bordergry);
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}

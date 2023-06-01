@@ -1,0 +1,15 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+
+#myFooter {
+    width: 100%;
+    height: 200px;
+    background-color: var(--buttongreen);
+}

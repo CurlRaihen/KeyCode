@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{gebaeude_uebersicht}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link th:href="@{/css/navbar.css}" rel="stylesheet" />
+    <link th:href="@{/css/general.css}" rel="stylesheet" />
+    <link th:href="@{/css/uebersicht_geb.css}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+
+</head>
+
+<body>
+    <nav th:insert="navbar.html :: navbar"> </nav>
+    <div id="container-content">
+        <div id="head-container">
+            <div id="page-overview">
+                <i id="icon" class="fa fa-building"></i>
+                <h2 id="page-title" th:text="#{gebaeude_uebersicht}"></h2>
+            </div>
+            <div class="building-overview">
+                <h6 th:text="#{gebäudeplan}"></h6>
+                <form action="karte">
+                    <button class="button" th:text="#{btn_anzeigen}"></button>
+                </form>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='Audimax')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_audimax.png" />
+                        </div>
+                        <h6 class="building-title">Audimax</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='Juridicum')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_juridicum.jpeg" />
+                        </div>
+                        <h6 class="building-title">Juridicum</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='Sportzentrum')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_sportzentrum.jpg" />
+                        </div>
+                        <h6 class="building-title">Sportzentrum</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='WIWI')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_wiwi.jpeg" />
+                        </div>
+                        <h6 class="building-title">Wirtschaftswissenschaften</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='Philosophicum')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_philo.jpeg" />
+                        </div>
+                        <h6 class="building-title">Philosophicum</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='FIM')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_fim.jpeg" />
+                        </div>
+                        <h6 class="building-title">FIM</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a th:href="@{/gebaeude(gebaeudeName='ITZ')}">
+                    <div class="building-card">
+                        <div class="building-img">
+                            <img class="image image-cover" src="/images/kc_itz.jpeg" />
+                        </div>
+                        <h6 class="building-title">ITZ</h6>
+                        <button class="button" th:text="#{auswaehlen}"></button>
+                    </div>
+                </a>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+
+    <footer th:insert="footer.html :: footer"> </footer>
+</body>
+<!-- SWITCH LANGUAGE START -->
+<script type="text/javascript" th:inline="javascript">
+    var sitename = "gebaeude_uebersicht";
+    $(document).ready(function () {
+        $("#locales").change(function () {
+            var selectedOption = $('#locales').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+        $("#localesSide").change(function () {
+            var selectedOption = $('#localesSide').val();
+            var link = sitename + "?lang=" + selectedOption;
+            if (selectedOption != '') {
+                window.location.replace(link);
+            }
+        });
+    });
+</script>
+<!-- SWITCH LANGUAGE END -->
+
+</html>

@@ -1,0 +1,195 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+input {
+    margin-bottom: 40px;
+}
+
+#raumname, #bereichsname, #enddatum, #startdatum {
+    background-color: white;;
+    color: var(--black);
+    width: 100%;
+    height: 40px;
+    border: var(--bordergry);
+    border-radius: 3px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.col #icon {
+    font-size: 12px;
+    background-color: var(--black);
+    color: white;
+}
+
+.icon-btn {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.icon-btn a {
+    cursor: pointer;
+}
+
+.button {
+    width: 100%;
+    height: 50px;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    border: 2px solid var(--bordergry);
+    border-radius: 10px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#btn-submit {
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+}
+
+#btn-submit:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}
+
+
+
+.button-berechtigung {
+    width: 230px;
+    height: 40px;
+    background-color: var(--brightgrey);
+    border: 1px;
+    border-radius: 5px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.dropdown-btn {
+    background-color: white;
+    margin-bottom: 40px;
+}
+
+.dropdown-item li {
+    background-color: white;
+    border: 2px solid var(--bordergry);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.dropdown-item a {
+    color: var(--bordergry);
+}
+
+.berechtigung {
+    margin-top: 5%;
+    margin-bottom: 4%;
+}
+
+
+/* START neue_bearbeiten.html*/
+
+.raum-item {
+    width: 200px;
+    height: 40px;
+    background-color: var(--brightgrey);
+    border: 1px solid var(--bordergry);
+    border-radius: 20px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.raum-title {
+    background-color: var(--brightgrey);
+    color: white;
+    margin-left: 15px;
+    margin-top: 7px;
+    float: left;
+}
+
+.raum-btn  {
+    float: right;
+    margin-right: 5%;
+    margin-top: 6px;
+    background-color: var(--brightgrey);
+    border: none;
+    color: black;
+}
+
+#ablehnen-btn {
+    background-color: var(--black);
+    color: red;
+}
+
+/* END neue_bearbeiten.html*/
+
+/* START erweitern_bearbeiten.html*/
+
+.keycardnr {
+    width: 70px;
+    height: 30px;
+    background-color: white;
+    color: var(--black);
+    text-align: center;
+    padding: auto 0;
+    border-radius: 3px;
+    padding-top: 2px;
+    margin-bottom: 40px;
+}
+
+/* END erweitern_bearbeiten.html*/
+
+.facility-edit {
+    margin-top: 30px;
+}
+
+.date-field {
+    width: 100%;
+    height: 38px;
+    background-color: white;
+    color: var(--black);
+    padding: auto 0;
+    border-radius: 3px;
+    padding-left: 7px;
+    padding-top: 7px;
+    margin-bottom: 40px;
+}
+
+.modal {
+    background-color: #191919f3;
+}
+
+.modal-dialog {
+    margin-top: 180px
+}
+
+.modal-body textarea{
+    background-color: var(--darkgrey);
+    color: white;
+}
+
+.modal-body #ablehnen-btn{
+    margin-top: 20px;
+}
+
+.modal-body #ablehnen-btn:hover{
+    background-color: rgb(176, 37, 37);
+    color: var(--black);
+}
+
+.modal-body #akzeptieren-btn{
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+}
+
+.modal-body #akzeptieren-btn:hover{
+    background-color: var(--buttongreen);
+    color: var(--black);
+}

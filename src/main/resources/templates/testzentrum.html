@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+
+    <title th:text="#{testzentrum}"></title>
+
+    <link href="dashboard/static/css/app.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="main">
+            <main class="content">
+
+                <div class="container-fluid p-0">
+
+                    <h1 class="h3 mb-3"><strong th:text="#{testzentrum}"></strong></h1>
+
+                    <form action="/testzentrum">
+                        <select name="keycardid" class="form-select mb-3" id="keycardSelector">
+                        </select>
+                        <button type="submit">Laden</button>
+                    </form>
+                    <br>
+                    <div class="türen">
+                        <div class="card">
+                            <canvas id="c" data-engine="three.js r146"></canvas>
+
+                            <div id="items"></div>
+
+                            <div id="text"></div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="dashboard/static/js/app.js"></script>
+
+    <script th:inline="javascript">
+
+        var kontoid = /*[[${kontoid}]]*/ "";
+
+        var tueren = /*[[${tueren}]]*/ "";
+        var doors = [];
+        tueren.forEach(function (tür) {
+            var ID = tür.split(" ");
+            doors.push(parseInt(ID[0]));
+        });
+
+        var access = [];
+        access = /*[[${berechtigungen}]]*/ "";
+
+        var keycards = /*[[${keycards}]]*/ "";
+        var keycardid = /*[[${keycardid}]]*/ "";
+        var status = /*[[${status}]]*/ "";
+        var anfangstag = /*[[${anfangstag}]]*/ "";
+        var endtag = /*[[${endtag}]]*/ "";
+
+        var startday = new Date(anfangstag);
+        var endday = new Date(endtag);
+        var today = new Date();
+
+        var keycardSelector = document.getElementById("keycardSelector");
+
+        keycards.forEach(function (keycard) {
+            var option = document.createElement("option");
+            option.text = keycard;
+            option.value = keycard;
+            keycardSelector.add(option);
+        });
+
+        if (keycardid != null) {
+            keycardSelector.value = keycardid;
+        }
+
+    </script>
+
+    <script type="module" src="js/testzentrum.js" th:inline="javascript"></script>
+
+</body>
+
+</html>

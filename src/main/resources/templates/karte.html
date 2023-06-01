@@ -1,0 +1,144 @@
+<html>
+
+<head>
+    <link rel="shortcut icon" href="/images/keycardicon.png" />
+    <title th:text="#{karte}"></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <script th:inline="javascript">
+        var audimax = /*[[${audimax}]]*/ "";
+        var fim = /*[[${fim}]]*/ "";
+        var itz = /*[[${itz}]]*/ "";
+        var juridicum = /*[[${juridicum}]]*/ "";
+        var philosophicum = /*[[${philosophicum}]]*/ "";
+        var sportzentrum = /*[[${sportzentrum}]]*/ "";
+        var wiwi = /*[[${wiwi}]]*/ "";
+
+        var map = L.map('map', { attributionControl: false }).setView([48.566722, 13.450362], 16.9);
+
+        L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        }).addTo(map);
+
+        var redIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        var blueIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        var Audimax = L.marker([48.567697, 13.451919], { icon: redIcon }).addTo(map);
+        Audimax.bindPopup(audimax.toString()).bindTooltip("Audimax",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var FIM = L.marker([48.566916, 13.451442], { icon: redIcon }).addTo(map);
+        FIM.bindPopup(fim.toString()).bindTooltip("FIM",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var ITZ = L.marker([48.565685, 13.450073], { icon: redIcon }).addTo(map);
+        ITZ.bindPopup(itz.toString()).bindTooltip("ITZ",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var Juridicum = L.marker([48.566943, 13.450347], { icon: redIcon }).addTo(map);
+        Juridicum.bindPopup(juridicum.toString()).bindTooltip("Juridicum",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var Philosophicum = L.marker([48.569495, 13.455953], { icon: redIcon }).addTo(map);
+        Philosophicum.bindPopup(philosophicum.toString()).bindTooltip("Philosophicum",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var Sportzentrum = L.marker([48.566213, 13.448443], { icon: redIcon }).addTo(map);
+        Sportzentrum.bindPopup(sportzentrum.toString()).bindTooltip("Sportzentrum",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var WIWI = L.marker([48.568672, 13.454318], { icon: redIcon }).addTo(map);
+        WIWI.bindPopup(wiwi.toString()).bindTooltip("WIWI",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        //keine Datenbankeinträge
+
+        var ZMK = L.marker([48.567019, 13.452256], { icon: blueIcon }).addTo(map);
+        ZMK.bindPopup("<b>Guten Tag!</b><br>Für das ZMK liegen uns noch keine Einträge vor").bindTooltip("ZMK",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var Zentralbibliothek = L.marker([48.568135, 13.453102], { icon: blueIcon }).addTo(map);
+        Zentralbibliothek.bindPopup("<b>Guten Tag!</b><br>Für die Zentralbibliothek liegen uns noch keine Einträge vor").bindTooltip("Zentralbibliothek",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+
+        var InnstegAula = L.marker([48.570156, 13.457798], { icon: blueIcon }).addTo(map);
+        InnstegAula.bindPopup("<b>Guten Tag!</b><br>Für die Innstegaula liegen uns noch keine Einträge vor").bindTooltip("Innsteg Aula",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+        var NK = L.marker([48.570376, 13.456423], { icon: blueIcon }).addTo(map);
+        NK.bindPopup("<b>Guten Tag!</b><br>Für das NK liegen uns noch keine Einträge vor").bindTooltip("NK",
+            {
+                permanent: true,
+                direction: 'bottom'
+            });
+
+    </script>
+
+</body>
+
+</html>

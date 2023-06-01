@@ -1,0 +1,266 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+.table-title {
+    margin-bottom: -10px;
+    display: flex;
+}
+
+.table-title-right {
+    height: 64px;
+    width: 400px;
+    padding: 0px 0px;
+    margin-bottom: -36px;
+}
+
+.player-one-title {
+    float: left;
+}
+
+.player-two-title {
+    float: right;
+    padding-right: 5px;
+}
+
+.bearbeiten {
+    border: none;
+    text-decoration: none;
+    color: var(--textgreen);
+}
+
+
+
+.table-item {
+    height: 64px;
+    width: 400px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #888;
+    border-color: var(--brightgrey);
+    background-color: var(--darkgrey);
+}
+
+.item-name {
+    background: var(--darkgrey);
+    color: var(--brightgrey);
+    font-size: 12px;
+}
+
+.item-content {
+    background: var(--darkgrey);
+}
+
+.button {
+    width: 200px;
+    height: 40px;
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    font-size: small;
+    margin-top: 15px;
+}
+
+.raumplan-button {
+    width: 100px;
+    height: 40px;
+    border: 1px solid var(--bordergry);
+    border-radius: 8px;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    font-size: small;
+    float: right;
+    margin-top: 7px;
+}
+
+#startdatum {
+    border: none;
+    text-decoration: none;
+    margin-right: 10px;
+    margin-top: 3px;
+}
+
+#dropdown-raum {
+    display: inline-block;
+    width: 100%;
+    background-color: var(--darkgrey);
+}
+
+.dropdown-btn {
+    color: white;
+}
+
+.player-one {
+    background-color: var(--darkgrey);
+    float: left;
+    padding-top: 15px;
+}
+
+.player-two {
+    background-color: var(--darkgrey);
+    float: right;
+    padding-top: 15px;
+    padding-right: 5px;
+}
+
+.table-btn {
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    border: none;
+    display: block;
+    padding-top: 12px;
+    margin: auto;
+}
+
+#button {
+    background-color: var(--buttongreen);
+    margin-top: 13px;
+}
+
+#button p {
+    background-color: var(--buttongreen);
+    color: var(--black);
+    text-align: center;
+    padding-top: 13px;
+}
+
+.auswählen {
+    margin-top: 8px;
+    border: none;
+    background-color: var(--buttongreen);
+    color: var(--black);
+    border: 1px solid var(--bordergry);
+    border-radius: 7px;
+    font-size: 12px;
+    padding: 8px;
+}
+
+select {
+    background-color: var(--darkgrey);
+}
+
+#details {
+    margin-bottom: 6px;
+}
+
+
+
+.modal-dialog {
+    background-color: var(--darkgrey);
+    border: 1px solid var(--bordergry);
+    border-radius: 7px;
+}
+
+.modal-header,
+.modal-title,
+.modal-body form,
+.modal-body,
+.modal-body p {
+    background-color: var(--darkgrey);
+    color: white;
+}
+
+.modal-body form select {
+    border: 1px solid var(--bordergry);
+    border-radius: 7px;
+    background-color: var(--darkgrey);
+    color: white;
+    padding: 5px;
+}
+
+.modal-button {
+    width: 20%;
+    border: 1px solid var(--bordergry);
+    border-radius: 5px;
+    background-color: var(--darkgrey);
+    color: var(--textgreen);
+    padding: 5px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.modal-button:hover {
+    background-color: var(--buttongreen);
+    color: var(--black);
+}
+
+.openModal {
+    display: flex;
+}
+
+.openModal div {
+    background-color: var(--darkgrey);
+}
+
+.openModal button {
+    background-color: var(--darkgrey);
+    border: none;
+}
+
+.newOwnerInput {
+    width: 70%;
+    height: 35px;
+    border: 1px solid var(--bordergry);
+    border-radius: 5px;
+    padding-left: 3px;
+}
+
+#test {
+    text-decoration: none;
+}
+
+.card-body input,
+#toEmail,
+#fromEmail,
+.form-control {
+    background-color: var(--bordergry);
+    border: 1px solid var(--bordergry);
+    color: white;
+}
+
+.modal-body form label {
+    background-color: var(--darkgrey);
+}
+
+#absenden-btn {
+
+
+    transition-duration: 0.4s;
+    cursor: pointer;
+
+}
+
+#absenden-btn:hover {
+    width: 201px;
+    height: 42px;
+}
+
+/*verkleinert das table-item*/
+@media screen and (max-width: 575px) {
+    .table-item {
+        width: 300px;
+    }
+
+    .table-title-right {
+        width: 300px;
+    }
+
+    .fehlermeldung {
+        width: 300px;
+    }
+
+    #select_keycard {
+        font-size: 14px;
+    }
+}
+
+.centerbutton {
+    width: 200px;
+    height: 40px;
+}

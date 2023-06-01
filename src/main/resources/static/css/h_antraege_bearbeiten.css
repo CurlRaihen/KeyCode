@@ -1,0 +1,77 @@
+:root {
+    --black: #191919;
+    --darkgrey: #212121;
+    --brightgrey: #747373;
+    --bordergry: #3C3939;
+    --buttongreen: #006C53;
+    --textgreen: #058B8B;
+}
+
+.overview-title {
+    margin-bottom: 10px;
+}
+
+.antrag-overview {
+    width: 100%;
+    height: 110px;
+    background-color: var(--darkgrey);
+    border: 1px solid var(--bordergry);
+    border-radius: 7px;
+    display: inline-block; 
+    margin-bottom: 10px;
+}
+
+.overview-left #icon {
+    font-size: 18px;
+    padding: 20px;
+    margin: 20px;
+}
+
+
+
+.overview-left {
+    float: left;
+    display: flex;
+    background-color: var(--darkgrey);
+}
+
+.overview-text {
+    margin-left: 20px;
+    background-color: var(--darkgrey);
+    margin-top: 25px;
+
+}
+
+.hashtags {
+    display: flex;
+    background-color: var(--darkgrey);
+}
+
+
+
+.overview-text p {
+    background-color: var(--darkgrey);
+    margin: 0;
+}
+
+.hashtags p {
+    color: var(--brightgrey);
+    margin-right: 10px;
+}
+
+.button {
+    float: right;
+    background-color: var(--darkgrey);
+    border: none;
+    color: var(--textgreen);
+    text-decoration: none;
+    margin-right: 50px;
+    margin-top: 40px;
+}
+
+.button:hover {
+    text-decoration: none;
+    color: var(--textgreen);
+    cursor: pointer;
+}
+

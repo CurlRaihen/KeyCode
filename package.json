@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "watch:scss": "node-sass -w src/main/resources/static/css/3dpage.scss src/main/resources/static/css/3dpage.css",
+    "start": "node src/main/resources/static/js/app.js"
+  },
+  "name": "project",
+  "description": "project keymanagement",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maximizefirst/projectProbe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maximizefirst/projectProbe/issues"
+  },
+  "homepage": "https://github.com/Maximizefirst/projectProbe#readme",
+  "devDependencies": {
+    "three": "^0.146.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
