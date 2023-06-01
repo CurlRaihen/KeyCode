@@ -7,7 +7,8 @@ KeyCode is an online key management system for access management at a university
 
 ## Use instructions
 1. Please ignore the warning about the expired HTTPS certificat
-2. You can find a user manuel (in german). The system itself can be used in german and english
-3. The Application can be found in your browser under http://localhost:8080 or https://localhost:8443
-4. Logins: user (name:Thomas ; pw:Thomas123), administrative stuff (name:Henrik ; pw: Henrik123), administrative manager (name:Moritz ; pw:Moritz123), system admin (name:Maxi ; pw:Maxi123)
+2. The Application can be found in your browser under http://localhost:8080 or https://localhost:8443
+3. Logins: user (name:Thomas ; pw:Thomas123), administrative stuff (name:Henrik ; pw: Henrik123), administrative manager (name:Moritz ; pw:Moritz123), system admin (name:Maxi ; pw:Maxi123)
+4. The system can be used in german and english
+
 
